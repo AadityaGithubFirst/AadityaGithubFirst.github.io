@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #ddd;
+            border: none;
+            outline: none;
+            margin: 0 5px;
+        }
+        .tab-button.active {
+            background-color: #bbb;
+        }
+        .quest-list {
+            margin: 20px;
+        }
+        .quest-item {
+            padding: 10px;
+            background-color: #fff;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .quest-item.completed {
+            animation: whoosh 0.5s ease-out;
+        }
+        @keyframes whoosh {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="tabs">
+        <button class="tab-button active" onclick="showTab('daily')">Daily Quests</button>
+        <button class="tab-button" onclick="showTab('job')">Job Quests</button>
+    </div>
+
+    <div id="daily" class="quest-list">
+        <div class="quest-item" onclick="completeQuest(this)">Complete 10 push-ups</div>
+        <div class="quest-item" onclick="completeQuest(this)">Read for 30 minutes</div>
+        <div class="quest-item" onclick="completeQuest(this)">Drink 2 liters of water</div>
+    </div>
+
+    <div id="job" class="quest-list" style="display:none;">
+        <div class="quest-item" onclick="completeQuest(this)">Finish project report</div>
+        <div class="quest-item" onclick="completeQuest(this)">Attend team meeting</div>
+        <div class="quest-item" onclick="completeQuest(this)">Review codebase</div>
+    </div>
+
+    <audio id="whoosh-sound" src="whoosh.mp3"></audio>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.quest-list').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.getElementById(tabName).style.display = 'block';
+
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`button[onclick="showTab('${tabName}')"]`).classList.add('active');
+        }
+
+        function completeQuest(quest) {
+            quest.classList.add('completed');
+            document.getElementById('whoosh-sound').play();
+            setTimeout(() => {
+                quest.remove();
+            }, 500);
+        }
+
+        function resetQuests() {
+            const dailyQuests = [
+                'Complete 10 push-ups',
+                'Read for 30 minutes',
+                'Drink 2 liters of water'
+            ];
+            const jobQuests = [
+                'Finish project report',
+                'Attend team meeting',
+                'Review codebase'
+            ];
+
+            const dailyList = document.getElementById('daily');
+            const jobList = document.getElementById('job');
+
+            dailyList.innerHTML = dailyQuests.map(quest => `<div class="quest-item" onclick="completeQuest(this)">${quest}</div>`).join('');
+            jobList.innerHTML = jobQuests.map(quest => `<div class="quest-item" onclick="completeQuest(this)">${quest}</div>`).join('');
+        }
+
+        function checkReset() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            if (hours === 0 && minutes === 0 && seconds === 0) {
+                resetQuests();
+            }
+        }
+
+        setInterval(checkReset, 1000);
+    </script>
+</body>
+</html>
