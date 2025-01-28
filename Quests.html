@@ -178,6 +178,30 @@
             });
             document.querySelector(`button[onclick="showTab('${tabName}')"]`).classList.add('active');
         }
+    // Function to edit a quest
+        function editQuest(button) {
+            const questItem = button.parentElement;
+            const currentText = questItem.childNodes[0].nodeValue.trim();
+            const dueDate = questItem.getAttribute('data-due-date');
+            const newText = prompt("Edit your quest:", currentText);
+            const newDueDate = prompt("Edit the due date (YYYY-MM-DD):", dueDate);
+
+            if (newText && newDueDate) {
+                questItem.childNodes[0].nodeValue = newText;
+                questItem.setAttribute('data-due-date', newDueDate);
+                saveJobQuests();
+                updateQuestColors();
+            }
+        }
+
+        // Function to delete a quest
+        function deleteQuest(button) {
+            const questItem = button.parentElement;
+            if (confirm("Are you sure you want to delete this quest?")) {
+                questItem.remove();
+                saveJobQuests();
+            }
+        }
 
         // Function to complete a quest
         function completeQuest(quest) {
