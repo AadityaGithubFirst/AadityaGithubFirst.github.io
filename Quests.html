@@ -74,27 +74,17 @@
     </div>
 
     <div id="job" class="quest-list" style="display:none;">
-        <div class="quest-item" data-due-date="2023-10-25">
-            Finish project report
-            <button class="edit-btn" onclick="editQuest(this)">✏️</button>
-            <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
-        </div>
-        <div class="quest-item" data-due-date="2023-10-27">
-            Attend team meeting
-            <button class="edit-btn" onclick="editQuest(this)">✏️</button>
-            <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
-        </div>
-        <div class="quest-item" data-due-date="2023-10-30">
-            Review codebase
-            <button class="edit-btn" onclick="editQuest(this)">✏️</button>
-            <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
-        </div>
+        <!-- Job Quests will be dynamically loaded here -->
         <button onclick="addQuest()" style="margin-top: 10px;">Add New Quest</button>
     </div>
 
     <audio id="whoosh-sound" src="https://assets.mixkit.co/active_storage/sfx/2997/2997-preview.mp3"></audio>
 
     <script>
+        // Load saved job quests from localStorage
+        let jobQuests = JSON.parse(localStorage.getItem('jobQuests')) || [];
+
+        // Function to show the selected tab
         function showTab(tabName) {
             document.querySelectorAll('.quest-list').forEach(tab => {
                 tab.style.display = 'none';
@@ -107,6 +97,7 @@
             document.querySelector(`button[onclick="showTab('${tabName}')"]`).classList.add('active');
         }
 
+        // Function to complete a quest
         function completeQuest(quest) {
             if (confirm("Have you completed this quest?")) {
                 quest.classList.add('completed');
@@ -117,22 +108,32 @@
             }
         }
 
+        // Function to edit a quest
         function editQuest(button) {
             const questItem = button.parentElement;
             const currentText = questItem.childNodes[0].nodeValue.trim();
+            const dueDate = questItem.getAttribute('data-due-date');
             const newText = prompt("Edit your quest:", currentText);
-            if (newText) {
+            const newDueDate = prompt("Edit the due date (YYYY-MM-DD):", dueDate);
+
+            if (newText && newDueDate) {
                 questItem.childNodes[0].nodeValue = newText;
+                questItem.setAttribute('data-due-date', newDueDate);
+                saveJobQuests();
+                updateQuestColors();
             }
         }
 
+        // Function to delete a quest
         function deleteQuest(button) {
             const questItem = button.parentElement;
             if (confirm("Are you sure you want to delete this quest?")) {
                 questItem.remove();
+                saveJobQuests();
             }
         }
 
+        // Function to add a new quest
         function addQuest() {
             const newQuestText = prompt("Enter the new quest:");
             const dueDate = prompt("Enter the due date (YYYY-MM-DD):");
@@ -146,11 +147,44 @@
                     <button class="edit-btn" onclick="editQuest(this)">✏️</button>
                     <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
                 `;
-                jobList.appendChild(newQuest);
+                jobList.insertBefore(newQuest, jobList.lastElementChild);
+                jobQuests.push({ text: newQuestText, dueDate: dueDate });
+                saveJobQuests();
                 updateQuestColors();
             }
         }
 
+        // Function to save job quests to localStorage
+        function saveJobQuests() {
+            const jobList = document.getElementById('job');
+            const quests = [];
+            jobList.querySelectorAll('.quest-item').forEach(quest => {
+                quests.push({
+                    text: quest.childNodes[0].nodeValue.trim(),
+                    dueDate: quest.getAttribute('data-due-date')
+                });
+            });
+            localStorage.setItem('jobQuests', JSON.stringify(quests));
+        }
+
+        // Function to load job quests from localStorage
+        function loadJobQuests() {
+            const jobList = document.getElementById('job');
+            jobQuests.forEach(quest => {
+                const newQuest = document.createElement('div');
+                newQuest.className = 'quest-item';
+                newQuest.setAttribute('data-due-date', quest.dueDate);
+                newQuest.innerHTML = `
+                    ${quest.text}
+                    <button class="edit-btn" onclick="editQuest(this)">✏️</button>
+                    <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
+                `;
+                jobList.insertBefore(newQuest, jobList.lastElementChild);
+            });
+            updateQuestColors();
+        }
+
+        // Function to update quest colors based on due dates
         function updateQuestColors() {
             const jobQuests = document.querySelectorAll('#job .quest-item');
             const today = new Date();
@@ -170,30 +204,30 @@
             });
         }
 
-        function resetQuests() {
-            const dailyQuests = [
-                'Complete 10 push-ups',
-                'Read for 30 minutes',
-                'Drink 2 liters of water'
-            ];
-            const dailyList = document.getElementById('daily');
-            dailyList.innerHTML = dailyQuests.map(quest => `<div class="quest-item" onclick="completeQuest(this)">${quest}</div>`).join('');
-        }
-
-        function checkReset() {
+        // Function to reset daily quests at midnight
+        function resetDailyQuests() {
             const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
+            const lastReset = localStorage.getItem('lastReset');
+            const lastResetDate = lastReset ? new Date(lastReset) : null;
 
-            if (hours === 0 && minutes === 0 && seconds === 0) {
-                resetQuests();
+            if (!lastResetDate || now.toDateString() !== lastResetDate.toDateString()) {
+                localStorage.setItem('lastReset', now.toISOString());
+                const dailyQuests = [
+                    'Complete 10 push-ups',
+                    'Read for 30 minutes',
+                    'Drink 2 liters of water'
+                ];
+                const dailyList = document.getElementById('daily');
+                dailyList.innerHTML = dailyQuests.map(quest => `<div class="quest-item" onclick="completeQuest(this)">${quest}</div>`).join('');
             }
         }
 
-        setInterval(checkReset, 1000);
-        setInterval(updateQuestColors, 1000 * 60 * 60); // Update colors every hour
-        updateQuestColors(); // Initial color update
+        // Load job quests and reset daily quests on page load
+        loadJobQuests();
+        resetDailyQuests();
+
+        // Check for reset every second
+        setInterval(resetDailyQuests, 1000);
     </script>
 </body>
-</html> 
+</html>
