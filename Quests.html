@@ -38,9 +38,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         .quest-item.completed {
             animation: whoosh 0.5s ease-out;
+        }
+        .quest-item.due-soon {
+            background-color: #fff3cd;
+        }
+        .quest-item.due-urgent {
+            background-color: #f8d7da;
+        }
+        .edit-btn, .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
         }
         @keyframes whoosh {
             0% { transform: translateX(0); opacity: 1; }
@@ -61,12 +74,25 @@
     </div>
 
     <div id="job" class="quest-list" style="display:none;">
-        <div class="quest-item" onclick="completeQuest(this)">Finish project report</div>
-        <div class="quest-item" onclick="completeQuest(this)">Attend team meeting</div>
-        <div class="quest-item" onclick="completeQuest(this)">Review codebase</div>
+        <div class="quest-item" data-due-date="2023-10-25">
+            Finish project report
+            <button class="edit-btn" onclick="editQuest(this)">✏️</button>
+            <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
+        </div>
+        <div class="quest-item" data-due-date="2023-10-27">
+            Attend team meeting
+            <button class="edit-btn" onclick="editQuest(this)">✏️</button>
+            <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
+        </div>
+        <div class="quest-item" data-due-date="2023-10-30">
+            Review codebase
+            <button class="edit-btn" onclick="editQuest(this)">✏️</button>
+            <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
+        </div>
+        <button onclick="addQuest()" style="margin-top: 10px;">Add New Quest</button>
     </div>
 
-    <audio id="whoosh-sound" src="whoosh.mp3"></audio>
+    <audio id="whoosh-sound" src="https://assets.mixkit.co/active_storage/sfx/2997/2997-preview.mp3"></audio>
 
     <script>
         function showTab(tabName) {
@@ -82,11 +108,66 @@
         }
 
         function completeQuest(quest) {
-            quest.classList.add('completed');
-            document.getElementById('whoosh-sound').play();
-            setTimeout(() => {
-                quest.remove();
-            }, 500);
+            if (confirm("Have you completed this quest?")) {
+                quest.classList.add('completed');
+                document.getElementById('whoosh-sound').play();
+                setTimeout(() => {
+                    quest.remove();
+                }, 500);
+            }
+        }
+
+        function editQuest(button) {
+            const questItem = button.parentElement;
+            const currentText = questItem.childNodes[0].nodeValue.trim();
+            const newText = prompt("Edit your quest:", currentText);
+            if (newText) {
+                questItem.childNodes[0].nodeValue = newText;
+            }
+        }
+
+        function deleteQuest(button) {
+            const questItem = button.parentElement;
+            if (confirm("Are you sure you want to delete this quest?")) {
+                questItem.remove();
+            }
+        }
+
+        function addQuest() {
+            const newQuestText = prompt("Enter the new quest:");
+            const dueDate = prompt("Enter the due date (YYYY-MM-DD):");
+            if (newQuestText && dueDate) {
+                const jobList = document.getElementById('job');
+                const newQuest = document.createElement('div');
+                newQuest.className = 'quest-item';
+                newQuest.setAttribute('data-due-date', dueDate);
+                newQuest.innerHTML = `
+                    ${newQuestText}
+                    <button class="edit-btn" onclick="editQuest(this)">✏️</button>
+                    <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
+                `;
+                jobList.appendChild(newQuest);
+                updateQuestColors();
+            }
+        }
+
+        function updateQuestColors() {
+            const jobQuests = document.querySelectorAll('#job .quest-item');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            jobQuests.forEach(quest => {
+                const dueDate = new Date(quest.getAttribute('data-due-date'));
+                const timeDiff = dueDate - today;
+                const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+                quest.classList.remove('due-soon', 'due-urgent');
+                if (daysDiff <= 3 && daysDiff > 1) {
+                    quest.classList.add('due-soon');
+                } else if (daysDiff <= 1) {
+                    quest.classList.add('due-urgent');
+                }
+            });
         }
 
         function resetQuests() {
@@ -95,17 +176,8 @@
                 'Read for 30 minutes',
                 'Drink 2 liters of water'
             ];
-            const jobQuests = [
-                'Finish project report',
-                'Attend team meeting',
-                'Review codebase'
-            ];
-
             const dailyList = document.getElementById('daily');
-            const jobList = document.getElementById('job');
-
             dailyList.innerHTML = dailyQuests.map(quest => `<div class="quest-item" onclick="completeQuest(this)">${quest}</div>`).join('');
-            jobList.innerHTML = jobQuests.map(quest => `<div class="quest-item" onclick="completeQuest(this)">${quest}</div>`).join('');
         }
 
         function checkReset() {
@@ -120,6 +192,8 @@
         }
 
         setInterval(checkReset, 1000);
+        setInterval(updateQuestColors, 1000 * 60 * 60); // Update colors every hour
+        updateQuestColors(); // Initial color update
     </script>
 </body>
-</html>
+</html> 
