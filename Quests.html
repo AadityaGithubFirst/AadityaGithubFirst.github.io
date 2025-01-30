@@ -263,7 +263,15 @@
                     <button class="edit-btn" onclick="editQuest(this)">✏️</button>
                     <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
                 `;
-                newQuest.onclick = completeQuest();
+                newQuest.onclick = function (quest) {
+            if (confirm("Have you completed this quest?")) {
+                quest.classList.add('completed');
+                document.getElementById('whoosh-sound').play();
+                setTimeout(() => {
+                    quest.remove();
+                }, 500);
+            }
+        }
                 jobList.insertBefore(newQuest, jobList.lastElementChild);
             });
             updateQuestColors();
