@@ -149,7 +149,10 @@
             <div class="quest-item" onclick="completeQuest(this)">📚 Study for 2 hours</div>
             <div class="quest-item" onclick="completeQuest(this)">🏋️‍♂️ Exercise for 30 minutes</div>
             <div class="quest-item" onclick="completeQuest(this)">🛀 Take a shower</div>
+            <div class="quest-item" onclick="completeQuest(this)">🍳 Eat Dinner</div>
+            <div class="quest-item" onclick="completeQuest(this)">📚 Read up on the latest trends</div>
             <div class="quest-item" onclick="completeQuest(this)">😴 Go to bed</div>
+
         </div>
 
         <!-- Job Quests Tab -->
@@ -223,6 +226,7 @@
                 const newQuest = document.createElement('div');
                 newQuest.className = 'quest-item';
                 newQuest.setAttribute('data-due-date', dueDate);
+                newQuest.onclick = completeQuest();
                 newQuest.innerHTML = `
                     ${newQuestText}
                     <button class="edit-btn" onclick="editQuest(this)">✏️</button>
