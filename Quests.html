@@ -226,7 +226,6 @@
                 const newQuest = document.createElement('div');
                 newQuest.className = 'quest-item';
                 newQuest.setAttribute('data-due-date', dueDate);
-                newQuest.onclick = completeQuest();
                 newQuest.innerHTML = `
                     ${newQuestText}
                     <button class="edit-btn" onclick="editQuest(this)">✏️</button>
@@ -264,6 +263,7 @@
                     <button class="edit-btn" onclick="editQuest(this)">✏️</button>
                     <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
                 `;
+                newQuest.onclick = completeQuest();
                 jobList.insertBefore(newQuest, jobList.lastElementChild);
             });
             updateQuestColors();
