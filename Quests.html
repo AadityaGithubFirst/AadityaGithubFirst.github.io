@@ -231,6 +231,15 @@
                     <button class="edit-btn" onclick="editQuest(this)">✏️</button>
                     <button class="delete-btn" onclick="deleteQuest(this)">🗑️</button>
                 `;
+                newQuest.onclick = function () {
+            if (confirm("Have you completed this quest?")) {
+                newQuest.classList.add('completed');
+                document.getElementById('whoosh-sound').play();
+                setTimeout(() => {
+                    newQuest.remove();
+                }, 500);
+            }
+        }
                 jobList.insertBefore(newQuest, jobList.lastElementChild);
                 jobQuests.push({ text: newQuestText, dueDate: dueDate });
                 saveJobQuests();
