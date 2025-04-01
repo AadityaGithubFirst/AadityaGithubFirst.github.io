@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTask Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --gray: #dfe6e9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f6fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #5649c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 92, 231, 0.3);
+        }
+        
+        .btn-sm {
+            padding: 5px 15px;
+            font-size: 14px;
+        }
+        
+        .task-list {
+            list-style: none;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: var(--light);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .task-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .task-checkbox {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .task-content {
+            flex-grow: 1;
+        }
+        
+        .task-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .task-completed .task-title {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+        
+        .task-due {
+            font-size: 12px;
+            color: #7f8c8d;
+            display: flex;
+            align-items: center;
+        }
+        
+        .task-due i {
+            margin-right: 5px;
+        }
+        
+        .task-actions {
+            display: flex;
+        }
+        
+        .task-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #95a5a6;
+            margin-left: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .task-actions button:hover {
+            color: var(--primary);
+        }
+        
+        .subtask-list {
+            margin-top: 10px;
+            padding-left: 20px;
+            border-left: 2px solid var(--secondary);
+        }
+        
+        .subtask-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: rgba(162, 155, 254, 0.1);
+            border-radius: 5px;
+        }
+        
+        .urgent {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .soon {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .future {
+            border-left: 4px solid var(--success);
+        }
+        
+        .add-task-form {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .add-task-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .date-picker {
+            position: relative;
+        }
+        
+        .date-picker input {
+            padding-right: 35px;
+        }
+        
+        .date-picker i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .badge-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .badge-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .badge-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .progress-bar {
+            height: 5px;
+            background-color: var(--gray);
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #95a5a6;
+        }
+        
+        .empty-state i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #95a5a6;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+            }
+            
+            nav ul li {
+                margin-left: 0;
+                margin-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Zen<span>Task</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-tab="daily">Daily Tasks</a></li>
+                    <li><a href="#" data-tab="projects">Projects</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <!-- Daily Tasks Tab -->
+            <div id="daily" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Today's Routine</h2>
+                        <button class="btn btn-primary btn-sm" id="addDailyTask">+ Add Task</button>
+                    </div>
+                    
+                    <div class="add-task-form" id="dailyTaskForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="dailyTaskInput" placeholder="What needs to be done today?">
+                        </div>
+                        <button class="btn btn-primary" id="saveDailyTask">Add Task</button>
+                    </div>
+                    
+                    <ul class="task-list" id="dailyTaskList">
+                        <!-- Tasks will be loaded from localStorage -->
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Habits Tracker</h2>
+                    </div>
+                    <div class="empty-state">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Coming soon! Track your habits and build consistency.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Projects Tab -->
+            <div id="projects" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">My Projects</h2>
+                        <button class="btn btn-primary btn-sm" id="addProject">+ New Project</button>
+                    </div>
+                    
+                    <div class="add-task-form" id="projectForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="projectTitle" placeholder="Project title">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" id="projectDescription" placeholder="Description (optional)" rows="2"></textarea>
+                        </div>
+                        <div class="form-group date-picker">
+                            <input type="date" class="form-control" id="projectDueDate">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <button class="btn btn-primary" id="saveProject">Create Project</button>
+                    </div>
+                    
+                    <ul class="task-list" id="projectList">
+                        <!-- Projects will be loaded from localStorage -->
+                    </ul>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>ZenTask &copy; 2023 | A mindful approach to productivity</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data structure for tasks
+        let tasks = {
+            daily: [],
+            projects: []
+        };
+
+        // Load tasks from localStorage when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTasks = localStorage.getItem('zenTasks');
+            if (savedTasks) {
+                tasks = JSON.parse(savedTasks);
+                renderDailyTasks();
+                renderProjects();
+            }
+            
+            // Initialize demo data if no tasks exist
+            if (tasks.daily.length === 0 && tasks.projects.length === 0) {
+                initializeDemoData();
+            }
+        });
+
+        // Initialize with some demo data
+        function initializeDemoData() {
+            tasks.daily = [
+                { id: Date.now(), title: "Morning meditation", completed: false },
+                { id: Date.now() + 1, title: "Review daily goals", completed: false },
+                { id: Date.now() + 2, title: "Drink 1L of water", completed: true }
+            ];
+
+            const projectId = Date.now() + 3;
+            tasks.projects = [
+                {
+                    id: projectId,
+                    title: "Website Redesign",
+                    description: "Redesign company website",
+                    dueDate: new Date(Date.now() + 86400000).toISOString().split('T')[0], // Tomorrow
+                    completed: false,
+                    subtasks: [
+                        { id: Date.now() + 4, title: "Create wireframes", completed: false },
+                        { id: Date.now() + 5, title: "Design homepage", completed: false }
+                    ]
+                }
+            ];
+
+            saveTasks();
+            renderDailyTasks();
+            renderProjects();
+        }
+
+        // Save tasks to localStorage
+        function saveTasks() {
+            localStorage.setItem('zenTasks', JSON.stringify(tasks));
+        }
+
+        // Render daily tasks
+        function renderDailyTasks() {
+            const dailyTaskList = document.getElementById('dailyTaskList');
+            dailyTaskList.innerHTML = '';
+
+            if (tasks.daily.length === 0) {
+                dailyTaskList.innerHTML = `
+                    <div class="empty-state" style="padding: 20px;">
+                        <i class="fas fa-check-circle"></i>
+                        <p>No daily tasks yet. Add your first task!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            tasks.daily.forEach(task => {
+                const taskItem = document.createElement('li');
+                taskItem.className = `task-item ${task.completed ? 'task-completed' : ''}`;
+                taskItem.dataset.id = task.id;
+                taskItem.innerHTML = `
+                    <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                    <div class="task-content">
+                        <div class="task-title">${task.title}</div>
+                    </div>
+                    <div class="task-actions">
+                        <button><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                dailyTaskList.appendChild(taskItem);
+
+                // Add event listeners
+                const checkbox = taskItem.querySelector('.task-checkbox');
+                checkbox.addEventListener('change', function() {
+                    const taskId = parseInt(taskItem.dataset.id);
+                    const taskIndex = tasks.daily.findIndex(t => t.id === taskId);
+                    tasks.daily[taskIndex].completed = this.checked;
+                    taskItem.classList.toggle('task-completed', this.checked);
+                    saveTasks();
+                });
+
+                const deleteBtn = taskItem.querySelector('.task-actions button');
+                deleteBtn.addEventListener('click', () => {
+                    const taskId = parseInt(taskItem.dataset.id);
+                    tasks.daily = tasks.daily.filter(t => t.id !== taskId);
+                    saveTasks();
+                    renderDailyTasks();
+                });
+            });
+        }
+
+        // Render projects
+        function renderProjects() {
+            const projectList = document.getElementById('projectList');
+            projectList.innerHTML = '';
+
+            if (tasks.projects.length === 0) {
+                projectList.innerHTML = `
+                    <div class="empty-state" style="padding: 20px;">
+                        <i class="fas fa-project-diagram"></i>
+                        <p>No projects yet. Create your first project!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            tasks.projects.forEach(project => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const due = project.dueDate ? new Date(project.dueDate) : null;
+                const diffTime = due ? due - today : 0;
+                const diffDays = due ? Math.ceil(diffTime / (1000 * 60 * 60 * 24)) : 0;
+                
+                let statusClass = 'future';
+                let statusText = 'On track';
+                let statusBadge = 'badge-success';
+                
+                if (diffDays <= 1) {
+                    statusClass = 'urgent';
+                    statusText = 'Urgent';
+                    statusBadge = 'badge-danger';
+                } else if (diffDays <= 3) {
+                    statusClass = 'soon';
+                    statusText = 'Soon';
+                    statusBadge = 'badge-warning';
+                }
+                
+                // Calculate progress
+                const totalSubtasks = project.subtasks ? project.subtasks.length : 0;
+                const completedSubtasks = project.subtasks ? project.subtasks.filter(st => st.completed).length : 0;
+                const progress = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0;
+
+                const projectItem = document.createElement('li');
+                projectItem.className = `task-item ${statusClass} ${project.completed ? 'task-completed' : ''}`;
+                projectItem.dataset.id = project.id;
+                projectItem.innerHTML = `
+                    <input type="checkbox" class="task-checkbox" ${project.completed ? 'checked' : ''}>
+                    <div class="task-content">
+                        <div class="task-title">${project.title} <span class="badge ${statusBadge}">${statusText}</span></div>
+                        <div class="task-due"><i class="far fa-clock"></i> ${getDueDateText(project.dueDate)}</div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: ${progress}%"></div>
+                        </div>
+                        ${project.subtasks && project.subtasks.length > 0 ? `
+                            <div class="subtask-list" id="subtasks-${project.id}">
+                                ${project.subtasks.map(subtask => `
+                                    <div class="subtask-item ${subtask.completed ? 'task-completed' : ''}" data-id="${subtask.id}">
+                                        <input type="checkbox" class="task-checkbox" ${subtask.completed ? 'checked' : ''}>
+                                        <div class="task-content">
+                                            <div class="task-title">${subtask.title}</div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="task-actions">
+                        <button class="add-subtask"><i class="fas fa-plus"></i></button>
+                        <button class="edit-project"><i class="fas fa-edit"></i></button>
+                        <button class="delete-project"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                projectList.appendChild(projectItem);
+
+                // Add event listeners
+                const projectCheckbox = projectItem.querySelector('.task-checkbox');
+                projectCheckbox.addEventListener('change', function() {
+                    const projectId = parseInt(projectItem.dataset.id);
+                    const projectIndex = tasks.projects.findIndex(p => p.id === projectId);
+                    tasks.projects[projectIndex].completed = this.checked;
+                    projectItem.classList.toggle('task-completed', this.checked);
+                    saveTasks();
+                });
+
+                const deleteBtn = projectItem.querySelector('.delete-project');
+                deleteBtn.addEventListener('click', () => {
+                    const projectId = parseInt(projectItem.dataset.id);
+                    tasks.projects = tasks.projects.filter(p => p.id !== projectId);
+                    saveTasks();
+                    renderProjects();
+                });
+
+                const addSubtaskBtn = projectItem.querySelector('.add-subtask');
+                addSubtaskBtn.addEventListener('click', () => {
+                    const subtaskTitle = prompt('Enter subtask title:');
+                    if (subtaskTitle) {
+                        const projectId = parseInt(projectItem.dataset.id);
+                        const projectIndex = tasks.projects.findIndex(p => p.id === projectId);
+                        
+                        if (!tasks.projects[projectIndex].subtasks) {
+                            tasks.projects[projectIndex].subtasks = [];
+                        }
+                        
+                        const newSubtask = {
+                            id: Date.now(),
+                            title: subtaskTitle,
+                            completed: false
+                        };
+                        
+                        tasks.projects[projectIndex].subtasks.push(newSubtask);
+                        saveTasks();
+                        renderProjects();
+                    }
+                });
+
+                // Add event listeners to subtasks
+                if (project.subtasks && project.subtasks.length > 0) {
+                    project.subtasks.forEach(subtask => {
+                        const subtaskElement = projectItem.querySelector(`.subtask-item[data-id="${subtask.id}"]`);
+                        if (subtaskElement) {
+                            const subtaskCheckbox = subtaskElement.querySelector('.task-checkbox');
+                            subtaskCheckbox.addEventListener('change', function() {
+                                const projectId = parseInt(projectItem.dataset.id);
+                                const projectIndex = tasks.projects.findIndex(p => p.id === projectId);
+                                const subtaskIndex = tasks.projects[projectIndex].subtasks.findIndex(st => st.id === subtask.id);
+                                tasks.projects[projectIndex].subtasks[subtaskIndex].completed = this.checked;
+                                subtaskElement.classList.toggle('task-completed', this.checked);
+                                
+                                // Update progress
+                                const completedSubtasks = tasks.projects[projectIndex].subtasks.filter(st => st.completed).length;
+                                const totalSubtasks = tasks.projects[projectIndex].subtasks.length;
+                                const progress = (completedSubtasks / totalSubtasks) * 100;
+                                projectItem.querySelector('.progress').style.width = `${progress}%`;
+                                
+                                saveTasks();
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        // Tab switching
+        document.querySelectorAll('nav a').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Update active tab
+                document.querySelector('nav a.active').classList.remove('active');
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.querySelector('.tab-content.active').classList.remove('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Toggle add task forms
+        document.getElementById('addDailyTask').addEventListener('click', () => {
+            document.getElementById('dailyTaskForm').classList.toggle('active');
+        });
+        
+        document.getElementById('addProject').addEventListener('click', () => {
+            document.getElementById('projectForm').classList.toggle('active');
+        });
+        
+        // Add daily task
+        document.getElementById('saveDailyTask').addEventListener('click', () => {
+            const taskInput = document.getElementById('dailyTaskInput');
+            if (taskInput.value.trim() === '') return;
+            
+            const newTask = {
+                id: Date.now(),
+                title: taskInput.value.trim(),
+                completed: false
+            };
+            
+            tasks.daily.push(newTask);
+            saveTasks();
+            renderDailyTasks();
+            
+            taskInput.value = '';
+            document.getElementById('dailyTaskForm').classList.remove('active');
+        });
+        
+        // Add project
+        document.getElementById('saveProject').addEventListener('click', () => {
+            const title = document.getElementById('projectTitle');
+            const description = document.getElementById('projectDescription');
+            const dueDate = document.getElementById('projectDueDate');
+            
+            if (title.value.trim() === '') return;
+            
+            const newProject = {
+                id: Date.now(),
+                title: title.value.trim(),
+                description: description.value.trim(),
+                dueDate: dueDate.value,
+                completed: false,
+                subtasks: []
+            };
+            
+            tasks.projects.push(newProject);
+            saveTasks();
+            renderProjects();
+            
+            title.value = '';
+            description.value = '';
+            dueDate.value = '';
+            document.getElementById('projectForm').classList.remove('active');
+        });
+        
+        // Helper function to get due date text
+        function getDueDateText(dateString) {
+            if (!dateString) return 'No due date';
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const due = new Date(dateString);
+            const diffTime = due - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'Due today';
+            if (diffDays === 1) return 'Due tomorrow';
+            if (diffDays === -1) return 'Due yesterday';
+            if (diffDays < 0) return `Due ${Math.abs(diffDays)} days ago`;
+            return `Due in ${diffDays} days`;
+        }
+
+        // Allow pressing Enter to submit forms
+        document.getElementById('dailyTaskInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('saveDailyTask').click();
+            }
+        });
+
+        document.getElementById('projectTitle').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('saveProject').click();
+            }
+        });
+    </script>
+</body>
+</html>
