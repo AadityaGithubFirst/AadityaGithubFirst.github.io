@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hugging Face Kahoot!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.25rem;
+            margin: auto;
+            max-width: 90%;
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+        #question-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #f0f0f0;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            min-height: 80px;
+            margin-bottom: 1rem;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        #answer-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 1rem;
+        }
+        .answer-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            text-align: center;
+            font-size: 1em;
+        }
+        .answer-button:hover {
+            background-color: #3b82f6;
+            transform: translateY(-0.125rem) scale(1.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .answer-button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .correct-answer {
+            background-color: #16a34a;
+        }
+        .wrong-answer {
+            background-color: #dc2626;
+        }
+        #message-box {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 10;
+            text-align: center;
+            max-width: 80%;
+            border: 1px solid #e0e0e0;
+        }
+        #message-box button {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            color: white;
+            background-color: #3b82f6;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            border: none;
+            font-size: 1em;
+        }
+        #message-box button:hover {
+            background-color: #2563eb;
+        }
+        .hidden {
+            display: none;
+        }
+        #score-display {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #3b82f6;
+        }
+        #game-over-box {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 10;
+            text-align: center;
+            max-width: 80%;
+            border: 1px solid #e0e0e0;
+        }
+        #game-over-box h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+        #game-over-box p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        #game-over-box button {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            color: white;
+            background-color: #3b82f6;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            border: none;
+            font-size: 1.1em;
+        }
+         #game-over-box button:hover {
+            background-color: #2563eb;
+        }
+        .blinking {
+            animation: blinker 1s linear infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-start min-h-screen py-6">
+    <div class="game-container">
+        <h1 class="text-2xl font-semibold text-indigo-600 mb-4">Hugging Face Kahoot!</h1>
+        <div id="question-box">
+            <span id="question-text" class="blinking">Loading question...</span>
+        </div>
+        <div id="answer-buttons">
+            <button id="answer-1" class="answer-button bg-blue-500"></button>
+            <button id="answer-2" class="answer-button bg-blue-500"></button>
+            <button id="answer-3" class="answer-button bg-blue-500"></button>
+            <button id="answer-4" class="answer-button bg-blue-500"></button>
+        </div>
+        <div id="message-box" class="hidden">
+            <p id="message-text">Welcome to the Hugging Face Adventure!</p>
+            <button id="message-button">OK</button>
+        </div>
+        <div id="score-display">
+            Score: <span id="score">0</span>
+        </div>
+        <div id="game-over-box" class="hidden">
+            <h2>Game Over</h2>
+            <p>Your final score is <span id="final-score">0</span>!</p>
+            <button id="play-again">Play Again</button>
+        </div>
+    </div>
+    <script>
+       // --- Game Constants ---
+        const questionBox = document.getElementById('question-box');
+        const questionText = document.getElementById('question-text');
+        const answerButtons = document.getElementsByClassName('answer-button');
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        const messageButton = document.getElementById('message-button');
+        const scoreDisplay = document.getElementById('score');
+        const gameOverBox = document.getElementById('game-over-box');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const playAgainButton = document.getElementById('play-again');
+
+        // --- Game State ---
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let gameStarted = false;
+        let currentQuestion;
+        let answeredCorrectly = false;
+
+        // --- Questions ---
+        const questions = [
+            {
+                question: "What is the main purpose of Hugging Face?",
+                answers: [
+                    "To provide a platform for building and deploying machine learning models",
+                    "To create a social network for AI researchers",
+                    "To offer cloud computing services",
+                    "To develop new programming languages",
+                ],
+                correctAnswer: 0,
+            },
+            {
+                question: "Which library is NOT commonly associated with Hugging Face?",
+                answers: ["Transformers", "Datasets", "Accelerate", "PyTorch"],
+                correctAnswer: 3,
+            },
+            {
+                question: "What is a 'pipeline' in Hugging Face Transformers?",
+                answers: [
+                    "A tool for training models",
+                    "A high-level API for using models for inference",
+                    "A method for evaluating model performance",
+                    "A data processing technique",
+                ],
+                correctAnswer: 1,
+            },
+            {
+                question: "What type of models can you find in the Hugging Face Model Hub?",
+                answers: [
+                    "Only Natural Language Processing models",
+                    "A wide variety of models for different tasks",
+                    "Only image processing models",
+                    "Only audio processing models",
+                ],
+                correctAnswer: 1,
+            },
+            {
+                question: "What does the 'Transformers' library provide?",
+                answers: [
+                    "Pre-trained models and tools for NLP tasks",
+                    "Tools for data visualization",
+                    "A framework for building neural networks from scratch",
+                    "A library for quantum computing",
+                ],
+                correctAnswer: 0,
+            },
+             {
+                question: "Which of the following is NOT a core concept in Hugging Face?",
+                answers: [
+                    "Datasets",
+                    "Transformers",
+                    "Pipelines",
+                    "Quantum Computing",
+                ],
+                correctAnswer: 3,
+            },
+            {
+                question: "What is the purpose of the Hugging Face 'Datasets' library?",
+                answers: [
+                    "To provide tools for visualizing data",
+                    "To offer pre-trained models for various tasks",
+                    "To provide easy access to a large collection of datasets",
+                    "To create new datasets from scratch",
+                ],
+                correctAnswer: 2,
+            },
+            {
+                question: "What is the role of the Hugging Face Model Hub?",
+                answers: [
+                    "To host and share pre-trained models",
+                    "To provide cloud computing resources",
+                    "To offer paid courses on machine learning",
+                    "To organize AI conferences",
+                ],
+                correctAnswer: 0,
+            },
+            {
+                question: "Which task can be performed using Hugging Face Pipelines?",
+                answers: [
+                    "Training a new model from scratch",
+                    "Fine-tuning an existing model",
+                    "Performing inference with a pre-trained model",
+                    "All of the above",
+                ],
+                correctAnswer: 2,
+            },
+            {
+                question: "What is the 'Accelerate' library used for?",
+                answers: [
+                    "Speeding up model training and inference",
+                    "Visualizing model performance",
+                    "Deploying models to production",
+                    "Creating new model architectures",
+                ],
+                correctAnswer: 0,
+            },
+        ];
+
+        // --- Game Functions ---
+        function startGame() {
+            gameStarted = true;
+            currentQuestionIndex = 0;
+            score = 0;
+            updateScoreDisplay();
+            gameOverBox.classList.add('hidden');
+            loadNextQuestion();
+        }
+
+        function loadNextQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                currentQuestion = questions[currentQuestionIndex];
+                questionText.textContent = currentQuestion.question;
+                for (let i = 0; i < answerButtons.length; i++) {
+                    answerButtons[i].textContent = currentQuestion.answers[i];
+                    answerButtons[i].className = 'answer-button bg-blue-500'; // Reset button color
+                    answerButtons[i].disabled = false;
+                }
+                answeredCorrectly = false;
+            } else {
+                endGame();
+            }
+        }
+
+        function handleAnswer(selectedIndex) {
+            if (answeredCorrectly) return;
+
+            if (selectedIndex === currentQuestion.correctAnswer) {
+                score += 20;
+                updateScoreDisplay();
+                answerButtons[selectedIndex].className = 'answer-button correct-answer';
+                messageText.textContent = "Correct!";
+            } else {
+                answerButtons[selectedIndex].className = 'answer-button wrong-answer';
+                answerButtons[currentQuestion.correctAnswer].className = 'answer-button correct-answer';
+                messageText.textContent = "Wrong answer!";
+            }
+            answeredCorrectly = true;
+
+            for (let i = 0; i < answerButtons.length; i++) {
+                answerButtons[i].disabled = true;
+            }
+            currentQuestionIndex++;
+            showMessage("OK", loadNextQuestion);
+        }
+
+        function showMessage(text, callback) {
+            messageText.textContent = text;
+            messageBox.classList.remove('hidden');
+            messageButton.onclick = () => {
+                messageBox.classList.add('hidden');
+                if (callback) callback();
+            };
+        }
+
+        function endGame() {
+            gameStarted = false;
+            finalScoreDisplay.textContent = score;
+            gameOverBox.classList.remove('hidden');
+            questionText.textContent = "Game Over!";
+            for (let i = 0; i < answerButtons.length; i++) {
+                answerButtons[i].classList.add('hidden');
+                answerButtons[i].disabled = true;
+            }
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = score;
+        }
+
+        // --- Event Listeners ---
+        playAgainButton.addEventListener('click', startGame);
+
+        for (let i = 0; i < answerButtons.length; i++) {
+            answerButtons[i].addEventListener('click', () => handleAnswer(i));
+        }
+
+        // --- Start Game on Load ---
+        startGame();
+    </script>
+</body>
+</html>
