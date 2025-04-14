@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
+  <title>Aaditya Hari Nair</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
   <style>
     /* Global Styles */
     :root {
@@ -48,6 +49,27 @@
       margin: 0 auto;
       padding: 20px;
     }
+    .download-resume {
+      margin-top: 20px;
+      display: inline-block;
+      background-color: #007aff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .download-resume:hover {
+      background-color: #005bb5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+      font-size: 0.9rem;
+    }
 
     /* Hero Section */
     .hero {
@@ -58,15 +80,15 @@
       animation: fadeIn 1.5s ease-in-out;
     }
 
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-    }
+    .hero img {
+  border-radius: 50%;
+  width: 150px;
+  margin-bottom: 20px;
+  border: 4px solid white;
+  display: block; /* Add this */
+  margin-left: auto; /* Add this */
+  margin-right: auto; /* Add this */
+}
 
     .hero .contact-icons {
       display: flex;
@@ -82,6 +104,16 @@
 
     .hero .contact-icons a:hover {
       transform: scale(1.2);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
     }
 
     /* Navigation Bar */
@@ -170,8 +202,10 @@
       color: var(--text-dark);
     }
 
-    /* Education Section */
-    .education-card {
+    /* Education, Internship, and Project Cards */
+    .education-card,
+    .internship-card,
+    .project-card {
       border: 1px solid #ddd;
       padding: 20px;
       margin: 10px 0;
@@ -180,28 +214,38 @@
       transition: all 0.3s ease;
     }
 
-    .education-card.expanded {
+    .education-card.expanded,
+    .internship-card.expanded,
+    .project-card.expanded {
       background-color: #f9f9f9;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    body.dark-mode .education-card.expanded {
+    body.dark-mode .education-card.expanded,
+    body.dark-mode .internship-card.expanded,
+    body.dark-mode .project-card.expanded {
       background-color: #3a3a3c;
     }
 
-    .education-card h3 {
+    .education-card h3,
+    .internship-card h3,
+    .project-card h3 {
       font-size: 1.5rem;
       margin-bottom: 10px;
     }
 
+    /* Expandable Content - Fixed Styles */
     .expandable-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease;
+      transition: max-height 0.5s ease-in-out;
     }
 
-    .education-card.expanded .expandable-content {
-      max-height: 200px;
+    .education-card.expanded .expandable-content,
+    .internship-card.expanded .expandable-content,
+    .project-card.expanded .expandable-content {
+      max-height: 1000px; /* Large enough to accommodate content */
+      margin-top: 15px;
     }
 
     /* Skills Section */
@@ -229,54 +273,6 @@
 
     .skill-item i {
       font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    /* Internships Section */
-    .internship-card {
-      border: 1px solid #ddd;
-      padding: 20px;
-      margin: 10px 0;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .internship-card.expanded {
-      background-color: #f9f9f9;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .internship-card.expanded {
-      background-color: #3a3a3c;
-    }
-
-    .internship-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-
-    /* Projects Section */
-    .project-card {
-      border: 1px solid #ddd;
-      padding: 20px;
-      margin: 10px 0;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .project-card.expanded {
-      background-color: #f9f9f9;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .project-card.expanded {
-      background-color: #3a3a3c;
-    }
-
-    .project-card h3 {
-      font-size: 1.5rem;
       margin-bottom: 10px;
     }
 
@@ -334,60 +330,60 @@
       }
     }
     .project-link:hover {
-            color: #6366f1;
-        }
-        .dark-mode {
-            background-color: #1a202c;
-            color: #f7fafc;
-        }
-        .dark-mode .header-gradient {
-            background: linear-gradient(to right, #1a202c, #2d3748);
-        }
-        .dark-mode .section-background {
-            background-color: #2d3748;
-        }
-        .dark-mode .bg-white {
-            background-color: #2d3748;
-            color: #f7fafc;
-        }
-        .dark-mode .text-gray-800{
-             color: #f7fafc;
-        }
-        .dark-mode .text-gray-700{
-            color: #cbd5e0;
-        }
-        .dark-mode .text-gray-600{
-            color: #a0aec0;
-        }
-        .header-gradient {
-            background: linear-gradient(to right, #6b7280, #374151);
-        }
-        .section-background {
-            background-color: #f3f4f6;
-        }
-        .card-shadow {
-            box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15);
-        }
-        .project-link {
-            color: #4f46e5;
-        }
+      color: #6366f1;
+    }
+    .dark-mode {
+      background-color: #1a202c;
+      color: #f7fafc;
+    }
+    .dark-mode .header-gradient {
+      background: linear-gradient(to right, #1a202c, #2d3748);
+    }
+    .dark-mode .section-background {
+      background-color: #2d3748;
+    }
+    .dark-mode .bg-white {
+      background-color: #2d3748;
+      color: #f7fafc;
+    }
+    .dark-mode .text-gray-800{
+      color: #f7fafc;
+    }
+    .dark-mode .text-gray-700{
+      color: #cbd5e0;
+    }
+    .dark-mode .text-gray-600{
+      color: #a0aec0;
+    }
+    .header-gradient {
+      background: linear-gradient(to right, #6b7280, #374151);
+    }
+    .section-background {
+      background-color: #f3f4f6;
+    }
+    .card-shadow {
+      box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15);
+    }
+    .project-link {
+      color: #4f46e5;
+    }
   </style>
-      <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@tailwindcss/browser@latest"></script>
-
+  <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@tailwindcss/browser@latest"></script>
 </head>
 <body>
   <!-- Updated Hero Section -->
   <div class="hero">
+    <img src="https://avatars.githubusercontent.com/u/108356674?v=4" alt="Aaditya Hari Nair">
     <h1>Aaditya Hari Nair</h1>
     <p>Data Scientist | Machine Learning Engineer | AI Enthusiast</p>
-    
     <div class="contact-icons">
       <a href="mailto:aadi.nair20703@gmail.com"><i class="fas fa-envelope"></i></a>
       <a href="https://github.com/AadityaGithubFirst" target="_blank"><i class="fab fa-github"></i></a>
       <a href="https://www.linkedin.com/in/aadityahnair" target="_blank"><i class="fab fa-linkedin"></i></a>
     </div>
+    <a href="Aaditya_Nair_Resume.pdf" download class="download-resume">Download Resume (PDF)</a>
   </div>
 
   <!-- Updated Navigation Bar -->
@@ -438,28 +434,28 @@
   <div id="skills" class="section">
     <div class="container">
       <h2 class="text-3xl font-semibold text-gray-800 text-center mb-8">Skills</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-                    <h4 class="text-lg font-semibold text-indigo-600 mb-3">Programming</h4>
-                    <p class="text-gray-700 text-lg">Python, R, C, Java, JavaScript, PHP, HTML, CSS</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-                    <h4 class="text-lg font-semibold text-indigo-600 mb-3">Database</h4>
-                    <p class="text-gray-700 text-lg">MySQL, Firebase, MariaDB, PostgreSQL</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-                    <h4 class="text-lg font-semibold text-indigo-600 mb-3">Operating Systems</h4>
-                    <p class="text-gray-700 text-lg">Windows, Linux</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-                    <h4 class="text-lg font-semibold text-indigo-600 mb-3">Language</h4>
-                    <p class="text-gray-700 text-lg">English, Hindi, French, Malayalam</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-                    <h4 class="text-lg font-semibold text-indigo-600 mb-3">Software Knowledge</h4>
-                    <p class="text-gray-700 text-lg">MATLAB, PyTorch, TensorFlow, PowerBI, Tableau, Hugging Face, pyspark, Kubernetes</p>
-                </div>
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
+          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Programming</h4>
+          <p class="text-gray-700 text-lg">Python, R, C, Java, JavaScript, PHP, HTML, CSS</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
+          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Database</h4>
+          <p class="text-gray-700 text-lg">MySQL, Firebase, MariaDB, PostgreSQL</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
+          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Operating Systems</h4>
+          <p class="text-gray-700 text-lg">Windows, Linux</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
+          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Language</h4>
+          <p class="text-gray-700 text-lg">English, Hindi, French, Malayalam</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
+          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Software Knowledge</h4>
+          <p class="text-gray-700 text-lg">MATLAB, PyTorch, TensorFlow, PowerBI, Tableau, Hugging Face, pyspark, Kubernetes</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -514,7 +510,7 @@
           <ul>
             <li>Curated dataset of 10,000+ images</li>
             <li>Achieved 93% accuracy with CNN model in PyTorch</li>
-            <li>False positive rate <2% (<a href="https://github.com/AadityaGithubFirst/DeepFake-Detection" target="_blank">GitHub</a>)</li>
+            <li>False positive rate <2% ( <a href="https://github.com/AadityaGithubFirst/DeepFake-Detection" target="_blank">GitHub</a>)</li>
           </ul>
         </div>
       </div>
@@ -525,13 +521,12 @@
           <ul>
             <li>CNN model achieving 94.6% accuracy on Kaggle dataset</li>
             <li>Implemented data preprocessing and hyperparameter tuning</li>
-            <li>Single-cell image classification for Plasmodium detection</li>
+            <li>Single-cell image classification for Plasmodium detection ( <a href="https://github.com/AadityaGithubFirst/Detection-of-Malaria-in-Red-Blood-Cells" target="_blank">GitHub</a>)</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
-
 
   <!-- Contact Section -->
   <div id="contact" class="section">
@@ -547,9 +542,24 @@
   </div>
 
   <script>
-    // Toggle expandable content
+    // Improved toggle function for expandable content
     function toggleExpand(card) {
-      card.classList.toggle("expanded");
+      // First close any other expanded cards in the same section
+      const parentSection = card.closest('.section');
+      const allCards = parentSection.querySelectorAll('.education-card, .internship-card, .project-card');
+      
+      allCards.forEach(otherCard => {
+        if (otherCard !== card && otherCard.classList.contains('expanded')) {
+          otherCard.classList.remove('expanded');
+        }
+      });
+      
+      // Then toggle the clicked card
+      card.classList.toggle('expanded');
+      
+      // Update ARIA attribute for accessibility
+      const isExpanded = card.classList.contains('expanded');
+      card.setAttribute('aria-expanded', isExpanded);
     }
 
     // Add transitions when sections come into view
@@ -578,5 +588,9 @@
       }
     }
   </script>
+  
+  <footer>
+    &copy; 2025 Aaditya Hari Nair | Made with ❤️
+  </footer>
 </body>
 </html>
