@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Poster</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .container {
+            max-width: 1200px; /* Increased max-width for larger screens */
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .section {
+            margin-bottom: 3rem;
+        }
+        .section-title {
+            font-size: 2.25rem; /* Larger font size for titles */
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1e293b; /* Darker heading color */
+            text-align: center; /* Center the title */
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem; /* Rounded corners for the image */
+            overflow: hidden; /* Ensure the rounded corners of the image are respected */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Add shadow */
+        }
+        .image-container img {
+            max-width: 100%; /* Ensure image doesn't exceed container width */
+            height: auto; /* Maintain aspect ratio */
+        }
+        .description {
+            font-size: 1.1rem; /* Increased font size for description */
+            line-height: 1.75; /* Improved line height for readability */
+            color: #4b5563; /* Slightly darker body text */
+            text-align: center; /* Center the description */
+            margin-bottom: 2rem;
+        }
+
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .grid-2-col > div {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+         .grid-2-col > div h3{
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .table-container {
+            overflow-x: auto; /* Enable horizontal scrolling for small screens */
+            margin-top: 2rem;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            overflow: hidden; /* Clip the rounded corners of the table */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .data-table thead th {
+            background-color: #f3f4f6; /* Light background for header */
+            color: #1e293b; /* Darker header text */
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb; /* Add a border */
+        }
+        .data-table tbody td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f3f4f6; /* Lighter border */
+        }
+        .data-table tbody tr:last-child td {
+            border-bottom: none; /* Remove border from last row */
+        }
+        .data-table tbody tr:nth-child(odd) {
+            background-color: #f9fafb; /* Very light background for odd rows */
+        }
+        .highlight {
+            font-weight: 600; /* Bold the highlighted values */
+            color: #1e293b;
+        }
+
+         @media (max-width: 768px) {
+            .grid-2-col {
+                grid-template-columns: 1fr; /* Stack columns on small screens */
+            }
+            .section-title{
+                font-size: 2rem;
+            }
+            .description{
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100"> <div class="container">
+        <header class="section">
+            <h1 class="section-title">Exploring Protein Fitness Landscapes with ReLIR</h1>
+            <p class="description">
+                This research investigates the use of the ReLIR model to understand protein fitness landscapes.  We examine how well the model can recreate and predict these landscapes,
+                comparing its performance to original experimental data.
+            </p>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="image-container">
+                    <img src="image_ba2a6f.jpg" alt="Research Poster Image">
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Quantitative Comparison</h2>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Recreated Landscape</th>
+                                <th>Original Landscape</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pearson Correlation</td>
+                                <td class="highlight">0.85</td>
+                                <td>1.00</td>
+                            </tr>
+                            <tr>
+                                <td>Spearman Correlation</td>
+                                <td class="highlight">0.82</td>
+                                <td>1.00</td>
+                            </tr>
+                            <tr>
+                                <td>R² Score</td>
+                                <td class="highlight">0.72</td>
+                                <td>1.00</td>
+                            </tr>
+                            <tr>
+                                 <td>RMSE</td>
+                                 <td class="highlight">0.25</td>
+                                 <td>0.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="mt-4 text-center text-gray-600 text-sm">
+                    Table 1: Comparison of metrics between the recreated fitness landscape and the original experimental landscape.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Fitness Landscape Visualization</h2>
+                <div class="grid-2-col">
+                    <div>
+                        <h3>Recreated Fitness Landscape</h3>
+                         <div class="image-container">
+                            <img src="recreated_fitness_landscape.png" alt="Recreated Fitness Landscape">
+                        </div>
+                        <p class="mt-2 text-center text-gray-600 text-sm">Figure 2:  Visualization of the recreated protein fitness landscape.</p>
+                    </div>
+                    <div>
+                        <h3>Original Fitness Landscape</h3>
+                        <div class="image-container">
+                            <img src="original_fitness_landscape.png" alt="Original Fitness Landscape">
+                        </div>
+                         <p class="mt-2 text-center text-gray-600 text-sm">Figure 3: Visualization of the original experimental protein fitness landscape.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Model Architecture</h2>
+                <div class="grid-2-col">
+                    <div>
+                         <h3>RVQ Encoder</h3>
+                         <div class="image-container">
+                            <img src="rvq_encoder_diagram.png" alt="RVQ Encoder Diagram">
+                         </div>
+                         <p class="mt-2 text-center text-gray-600 text-sm">Figure 4a:  Diagram of the RVQ encoder component of the model.</p>
+                    </div>
+                    <div>
+                        <h3>Overall Model</h3>
+                        <div class="image-container">
+                           <img src="overall_model_diagram.jpeg" alt="Overall Model Diagram">
+                        </div>
+                        <p class="mt-2 text-center text-gray-600 text-sm">Figure 4b:  Diagram of the overall ReLIR model architecture.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center text-gray-500 text-sm mt-4">
+            <p>Research presented at [Conference/Institution Name]</p>
+        </footer>
+    </div>
+</body>
+</html>
