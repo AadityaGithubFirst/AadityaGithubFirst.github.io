@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Poster</title>
+    <title>AI Jazz Generation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,210 +12,207 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        .container {
-            max-width: 1200px; /* Increased max-width for larger screens */
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        .section {
-            margin-bottom: 3rem;
-        }
-        .section-title {
-            font-size: 2.25rem; /* Larger font size for titles */
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #1e293b; /* Darker heading color */
-            text-align: center; /* Center the title */
-        }
-        .image-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            border-radius: 0.5rem; /* Rounded corners for the image */
-            overflow: hidden; /* Ensure the rounded corners of the image are respected */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Add shadow */
-        }
-        .image-container img {
-            max-width: 100%; /* Ensure image doesn't exceed container width */
-            height: auto; /* Maintain aspect ratio */
-        }
-        .description {
-            font-size: 1.1rem; /* Increased font size for description */
-            line-height: 1.75; /* Improved line height for readability */
-            color: #4b5563; /* Slightly darker body text */
-            text-align: center; /* Center the description */
-            margin-bottom: 2rem;
-        }
-
-        .grid-2-col {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .grid-2-col > div {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-         .grid-2-col > div h3{
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
         .table-container {
             overflow-x: auto; /* Enable horizontal scrolling for small screens */
             margin-top: 2rem;
+            margin-bottom: 2rem;
         }
-        .data-table {
-            width: 100%;
+        .custom-table {
             border-collapse: collapse;
-            margin-top: 1rem;
-            border-radius: 0.5rem;
-            overflow: hidden; /* Clip the rounded corners of the table */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .data-table thead th {
-            background-color: #f3f4f6; /* Light background for header */
-            color: #1e293b; /* Darker header text */
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #e5e7eb; /* Add a border */
-        }
-        .data-table tbody td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #f3f4f6; /* Lighter border */
-        }
-        .data-table tbody tr:last-child td {
-            border-bottom: none; /* Remove border from last row */
-        }
-        .data-table tbody tr:nth-child(odd) {
-            background-color: #f9fafb; /* Very light background for odd rows */
-        }
-        .highlight {
-            font-weight: 600; /* Bold the highlighted values */
-            color: #1e293b;
+            width: 100%;
+            max-width: 800px; /* Limit table width for larger screens */
+            margin: 0 auto; /* Center the table */
+            background-color: rgba(255, 255, 255, 0.05); /* Light background for the table */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Add shadow */
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-         @media (max-width: 768px) {
-            .grid-2-col {
-                grid-template-columns: 1fr; /* Stack columns on small screens */
-            }
-            .section-title{
-                font-size: 2rem;
-            }
-            .description{
-                font-size: 1rem;
-            }
+        .custom-table th, .custom-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter borders */
         }
+
+        .custom-table th {
+            font-weight: 600;
+            color: #f0f0f0; /* Light header text */
+        }
+
+        .custom-table td {
+            color: #d0d0d0;
+        }
+
+        .custom-table thead {
+            background-color: rgba(255, 255, 255, 0.1); /* Slightly darker header background */
+        }
+        .custom-table tr:last-child td {
+            border-bottom: none; /* Remove border from the last row */
+        }
+
     </style>
 </head>
-<body class="bg-gray-100"> <div class="container">
-        <header class="section">
-            <h1 class="section-title">Residual Vector Quantization in the Jazz Transformer for AI Music Generation</h1>
-            <p class="description">
-                We replicated the Transformer-XL model for jazz generation (Wu & Yang, 2020) and integrated Residual Vector Quantization (RVQ) to reduce memory and compute costs while preserving quality.
-            </p>
-        </header>
+<body class="bg-gradient-to-br from-gray-900 to-purple-900 text-white">
+    <header class="py-6 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
+                Residual Vector Quantization in the Jazz Transformer
+            </h1>
+            <p class="mt-2 text-lg text-gray-300">for AI Music Generation</p>
+            <p class="mt-4 text-md text-gray-400">Aaditya H. Nair &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Achintya Srikanth &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Guantong Zhang</p>
+        </div>
+    </header>
 
-        <main>
-            <section class="section">
-                <div class="image-container">
-                    <img src="image_ba2a6f.jpg" alt="Research Poster Image">
-                </div>
+    <main class="py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto space-y-8">
+            <section class="bg-white/5 backdrop-blur-md rounded-xl shadow-lg p-6 sm:p-8 border border-white/10">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4">Introduction</h2>
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    We replicated the Transformer-XL model for jazz generation (Wu & Yang, 2020) and integrated Residual Vector Quantization (RVQ) to reduce memory and compute costs
+                    while preserving quality.  This project explores the fascinating intersection of deep learning and music,
+                    specifically focusing on how we can leverage advanced models like Transformer-XL to generate jazz music.
+                    Our primary goal was to not only replicate existing work but also to enhance it by making the model more efficient.
+                </p>
             </section>
 
-            <section class="section">
-                <h2 class="section-title">Quantitative Comparison</h2>
-                <div class="table-container">
-                    <table class="data-table">
+            <section class="bg-white/5 backdrop-blur-md rounded-xl shadow-lg p-6 sm:p-8 border border-white/10">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4">Visual Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="Untitled.png" alt="Project Overview" class="rounded-lg shadow-xl border border-white/10 w-full">
+                        <p class="mt-2 text-center text-sm text-gray-400">High-Level Project Overview</p>
+                    </div>
+                    <div>
+                         <img src="fitness_scapeplot_replicated.png" alt="Fitness Scapeplot Replicated" class="rounded-lg shadow-xl border border-white/10 w-full">
+                         <p class="mt-2 text-center text-sm text-gray-400">Fitness Scapeplot of the Replicated Model</p>
+                    </div>
+                    <div>
+                        <img src="rvq_encoder.png" alt="RVQ Encoder" class="rounded-lg shadow-xl border border-white/10 w-full">
+                        <p class="mt-2 text-center text-sm text-gray-400">RVQ Encoder Architecture</p>
+                    </div>
+                    <div>
+                        <img src="fitness_scapeplot_original.png" alt="Fitness Scapeplot Original" class="rounded-lg shadow-xl border border-white/10 w-full">
+                         <p class="mt-2 text-center text-sm text-gray-400">Fitness Scapeplot of the Original Model</p>
+                    </div>
+                </div>
+                <p class="mt-4 text-center text-sm text-gray-400">
+                    Overview of our approach, combining Transformer-XL with Residual Vector Quantization (RVQ) for efficient jazz music generation.
+                </p>
+            </section>
+
+            <section class="bg-white/5 backdrop-blur-md rounded-xl shadow-lg p-6 sm:p-8 border border-white/10">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4">Key Aspects of Our Work</h2>
+                <ul class="list-disc list-inside space-y-2 text-lg text-gray-300">
+                    <li><strong>Transformer-XL Replication:</strong> We started by faithfully replicating the Transformer-XL model, known for its ability to capture long-range dependencies in sequential data, which is crucial for generating coherent music.</li>
+                    <li><strong>Residual Vector Quantization (RVQ):</strong> To improve efficiency, we integrated RVQ.  RVQ allows us to compress the model's representations, reducing both memory footprint and computational demands, without significantly sacrificing the quality of the generated music.</li>
+                    <li><strong>Jazz Focus:</strong> Our model is specifically tailored for jazz music, a genre characterized by its complex harmonies, improvisation, and rhythmic nuances.</li>
+                    <li><strong>Performance Analysis:</strong> We conducted a thorough analysis of our model's performance, comparing it to the original Transformer-XL.</li>
+                </ul>
+            </section>
+
+             <section class="bg-white/5 backdrop-blur-md rounded-xl shadow-lg p-6 sm:p-8 border border-white/10">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4">Comparison of Metrics</h2>
+                 <div class="table-container">
+                    <table class="custom-table">
                         <thead>
                             <tr>
                                 <th>Metric</th>
-                                <th>Recreated Landscape</th>
-                                <th>Original Landscape</th>
+                                <th colspan="2">Recreated Model</th>
+                                <th colspan="2">Original Model</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>Loss</th>
+                                <th>Loss</th>
+                                 <th>Loss</th>
+                                  <th>Loss</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Pearson Correlation</td>
-                                <td class="highlight">0.85</td>
-                                <td>1.00</td>
+                                <td>Loss</td>
+                                <td>0.878</td>
+                                <td>0.248</td>
+                                <td>0.88</td>
+                                 <td>0.25</td>
                             </tr>
                             <tr>
-                                <td>Spearman Correlation</td>
-                                <td class="highlight">0.82</td>
-                                <td>1.00</td>
+                                <td>H1</td>
+                                <td>2.067</td>
+                                <td>1.985</td>
+                                <td>2.29</td>
+                                <td>2.45</td>
+                            </tr>
+                             <tr>
+                                <td>H4</td>
+                                <td>2.904</td>
+                                <td>2.693</td>
+                                <td>3.12</td>
+                                <td>3.05</td>
                             </tr>
                             <tr>
-                                <td>R² Score</td>
-                                <td class="highlight">0.72</td>
-                                <td>1.00</td>
+                                <td>GS</td>
+                                <td>0.808</td>
+                                <td>0.767</td>
+                                 <td>0.76</td>
+                                  <td>0.69</td>
                             </tr>
                             <tr>
-                                 <td>RMSE</td>
-                                 <td class="highlight">0.25</td>
-                                 <td>0.00</td>
+                                <td>CPI</td>
+                                <td colspan="2">0.759</td>
+                                <td colspan="2">0.812</td>
+                            </tr>
+                            <tr>
+                                <td>SI_short</td>
+                                <td>0.373</td>
+                                <td>0.286</td>
+                                <td>0.18</td>
+                                <td>0.22</td>
+                            </tr>
+                            <tr>
+                                 <td>SI_mid</td>
+                                <td>0.399</td>
+                                <td>0.291</td>
+                                <td>0.15</td>
+                                <td>0.17</td>
+                            </tr>
+                            <tr>
+                                <td>SI_long</td>
+                                <td>0.366</td>
+                                <td>0.272</td>
+                                <td>0.11</td>
+                                <td>0.14</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <p class="mt-4 text-center text-gray-600 text-sm">
-                    Table 1: Comparison of metrics between the recreated fitness landscape and the original experimental landscape.
+                 </div>
+                <p class="mt-4 text-center text-sm text-gray-400">
+                    Comparison of the metrics of the model replicated in this paper with the original.
                 </p>
             </section>
 
-            <section class="section">
-                <h2 class="section-title">Fitness Landscape Visualization</h2>
-                <div class="grid-2-col">
-                    <div>
-                        <h3>Recreated Fitness Landscape</h3>
-                         <div class="image-container">
-                            <img src="recreated_fitness_landscape.png" alt="Recreated Fitness Landscape">
-                        </div>
-                        <p class="mt-2 text-center text-gray-600 text-sm">Figure 2:  Visualization of the recreated protein fitness landscape.</p>
-                    </div>
-                    <div>
-                        <h3>Original Fitness Landscape</h3>
-                        <div class="image-container">
-                            <img src="original_fitness_landscape.png" alt="Original Fitness Landscape">
-                        </div>
-                         <p class="mt-2 text-center text-gray-600 text-sm">Figure 3: Visualization of the original experimental protein fitness landscape.</p>
-                    </div>
-                </div>
+            <section class="bg-white/5 backdrop-blur-md rounded-xl shadow-lg p-6 sm:p-8 border border-white/10">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4">Technical Details</h2>
+                <p class="text-lg text-gray-300 leading-relaxed mb-4">
+                    The core of our approach involves replacing parts of the Transformer-XL model with an RVQ encoder.  This encoder compresses the continuous representations learned by the Transformer-XL into a discrete set of vectors.
+                    By doing this, we significantly reduce the number of bits required to store and process the music data.
+                </p>
+                <h3 class="text-xl font-semibold text-gray-200 mt-4 mb-2">RVQ Encoder</h3>
+                <ul class="list-disc list-inside space-y-2 text-lg text-gray-300">
+                    <li>The RVQ encoder consists of multiple stages.</li>
+                    <li>Each stage quantizes the input vector into a discrete representation.</li>
+                    <li>The residuals from each stage are passed to the next stage for further quantization.</li>
+                    <li>This multi-stage quantization process allows for a finer-grained representation of the data, leading to better reconstruction quality.</li>
+                 </ul>
             </section>
+        </div>
+    </main>
 
-            <section class="section">
-                <h2 class="section-title">Model Architecture</h2>
-                <div class="grid-2-col">
-                    <div>
-                         <h3>RVQ Encoder</h3>
-                         <div class="image-container">
-                            <img src="rvq_encoder_diagram.png" alt="RVQ Encoder Diagram">
-                         </div>
-                         <p class="mt-2 text-center text-gray-600 text-sm">Figure 4a:  Diagram of the RVQ encoder component of the model.</p>
-                    </div>
-                    <div>
-                        <h3>Overall Model</h3>
-                        <div class="image-container">
-                           <img src="overall_model_diagram.jpeg" alt="Overall Model Diagram">
-                        </div>
-                        <p class="mt-2 text-center text-gray-600 text-sm">Figure 4b:  Diagram of the overall ReLIR model architecture.</p>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="text-center text-gray-500 text-sm mt-4">
-            <p>Research presented at [Conference/Institution Name]</p>
-        </footer>
-    </div>
+    <footer class="py-6 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto text-center text-gray-400">
+            <p>&copy; 2024 AI Jazz Generation. All rights reserved.</p>
+            <p>A project exploring efficient AI music generation.</p>
+        </div>
+    </footer>
 </body>
 </html>
