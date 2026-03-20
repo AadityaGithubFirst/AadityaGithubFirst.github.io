@@ -1,601 +1,927 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aaditya Hari Nair</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  
-  <style>
-    /* Global Styles */
-    :root {
-      --primary-color: #007aff;
-      --background-light: #f5f5f7;
-      --background-dark: #1d1d1f;
-      --text-light: #1d1d1f;
-      --text-dark: #f5f5f7;
-      --card-light: white;
-      --card-dark: #2c2c2e;
-      --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
-      --shadow-dark: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaditya Hari Nair — Data Scientist & ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --surface2: #1c1c1c;
+    --accent: #e8ff47;
+    --accent2: #ff6b35;
+    --text: #f0ede6;
+    --muted: #6b6b6b;
+    --border: #2a2a2a;
+  }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--background-light);
-      color: var(--text-light);
-      transition: background-color 0.5s ease, color 0.5s ease;
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body.dark-mode {
-      background-color: var(--background-dark);
-      color: var(--text-dark);
-    }
+  html { scroll-behavior: smooth; }
 
-    h1, h2, h3 {
-      margin: 0;
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-    a {
-      text-decoration: none;
-      color: var(--primary-color);
-    }
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(232,255,71,0.4);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+  body:hover .cursor { opacity: 1; }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .download-resume {
-      margin-top: 20px;
-      display: inline-block;
-      background-color: #007aff;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    font-weight: 600;
+  }
+  .nav-links a:hover { color: var(--accent); }
 
-    .download-resume:hover {
-      background-color: #005bb5;
-    }
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 8rem 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(232,255,71,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,255,71,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.3;
+  }
+  .hero-orb {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,255,71,0.06) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+    animation: orb-drift 8s ease-in-out infinite alternate;
+  }
+  @keyframes orb-drift {
+    from { transform: translate(0,0) scale(1); }
+    to { transform: translate(-40px, 40px) scale(1.1); }
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 40px; height: 1px; background: var(--accent);
+  }
+  .hero-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-desc {
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    font-weight: 400;
+  }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: none;
+  }
+  .btn-primary {
+    background: var(--accent); color: #0d0d0d;
+    border: 2px solid var(--accent);
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 2px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-scroll {
+    position: absolute; bottom: 2rem; right: 3rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--muted); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+  @keyframes scroll-pulse {
+    0%,100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #999;
-      font-size: 0.9rem;
-    }
+  /* SECTIONS */
+  section { padding: 7rem 3rem; }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--accent); }
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 3rem;
+  }
 
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 100px 20px;
-      background: linear-gradient(135deg, var(--primary-color), #34a853);
-      color: white;
-      animation: fadeIn 1.5s ease-in-out;
-    }
+  /* ABOUT */
+  #about { background: var(--surface); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    max-width: 1200px;
+  }
+  .about-text p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+  }
+  .about-text p strong { color: var(--text); font-weight: 400; }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .stat-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--accent); }
+  .stat-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .stat-card:hover::before { transform: scaleX(1); }
+  .stat-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 3rem; color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.05em; }
 
-    .hero img {
-  border-radius: 50%;
-  width: 150px;
-  margin-bottom: 20px;
-  border: 4px solid white;
-  display: block; /* Add this */
-  margin-left: auto; /* Add this */
-  margin-right: auto; /* Add this */
-}
+  /* PROJECTS */
+  #projects { background: var(--bg); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+  }
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+  }
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+  .project-card::after {
+    content: '↗';
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    font-size: 1.2rem; color: var(--accent);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .project-card:hover::after { opacity: 1; }
+  .project-tag {
+    display: inline-block;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent2); background: rgba(255,107,53,0.1);
+    padding: 0.25rem 0.6rem; margin-bottom: 1rem;
+    border: 1px solid rgba(255,107,53,0.2);
+  }
+  .project-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.5rem; margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .project-desc {
+    color: var(--muted); font-size: 0.9rem; line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-family: 'DM Mono', monospace; font-weight: 300;
+  }
+  .project-stack {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .stack-tag {
+    font-size: 0.65rem; padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--muted); letter-spacing: 0.05em;
+    font-family: 'DM Mono', monospace;
+  }
 
-    .hero .contact-icons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
+  /* SKILLS */
+  #skills { background: var(--surface); }
+  .skills-container { max-width: 1000px; }
+  .skill-group { margin-bottom: 3rem; }
+  .skill-group-title {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1rem; font-weight: 700;
+  }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .skill-pill {
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--border);
+    font-size: 0.8rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    transition: all 0.2s;
+    cursor: none;
+  }
+  .skill-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232,255,71,0.05);
+  }
 
-    .hero .contact-icons a {
-      color: white;
-      font-size: 1.5rem;
-      transition: transform 0.3s ease;
-    }
+  /* BLOG */
+  #blog { background: var(--bg); }
+  .blog-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+  }
+  .blog-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .blog-card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-4px);
+  }
+  .blog-meta {
+    display: flex; gap: 1rem; align-items: center;
+    margin-bottom: 1rem;
+  }
+  .blog-date {
+    font-size: 0.7rem; color: var(--muted);
+    font-family: 'DM Mono', monospace; letter-spacing: 0.05em;
+  }
+  .blog-category {
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent2); padding: 0.2rem 0.5rem;
+    border: 1px solid rgba(255,107,53,0.3);
+  }
+  .blog-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.3rem; line-height: 1.3;
+    margin-bottom: 0.75rem;
+  }
+  .blog-excerpt {
+    color: var(--muted); font-size: 0.875rem; line-height: 1.7;
+    font-family: 'DM Mono', monospace; font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .read-more {
+    font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 700;
+    display: flex; align-items: center; gap: 0.4rem;
+    text-decoration: none;
+  }
+  .read-more::after { content: '→'; transition: transform 0.2s; }
+  .blog-card:hover .read-more::after { transform: translateX(4px); }
 
-    .hero .contact-icons a:hover {
-      transform: scale(1.2);
-    }
+  /* BLOG MODAL */
+  .blog-modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+    overflow-y: auto;
+    padding: 2rem;
+  }
+  .blog-modal-overlay.active { display: flex; justify-content: center; align-items: flex-start; }
+  .blog-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    max-width: 720px; width: 100%;
+    padding: 3rem;
+    margin: auto;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); width: 36px; height: 36px;
+    font-size: 1.1rem; cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { border-color: var(--accent); color: var(--accent); }
+  .modal-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.2rem; line-height: 1.2; margin-bottom: 1rem;
+  }
+  .modal-meta { display: flex; gap: 1rem; margin-bottom: 2rem; }
+  .modal-body {
+    color: var(--muted); line-height: 1.8;
+    font-family: 'DM Mono', monospace; font-weight: 300;
+    font-size: 0.95rem;
+  }
+  .modal-body p { margin-bottom: 1.2rem; }
+  .modal-body h3 {
+    font-family: 'Instrument Serif', serif;
+    color: var(--text); font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+  }
 
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
+  /* NEW POST FORM */
+  .new-post-form {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    max-width: 1200px;
+  }
+  .new-post-form.active { display: block; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    cursor: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--accent); }
+  .form-group textarea { min-height: 180px; resize: vertical; }
+  .form-group select option { background: var(--surface2); }
+  .form-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
 
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-    }
+  /* CONTACT */
+  #contact { background: var(--surface); }
+  .contact-inner {
+    max-width: 700px;
+  }
+  .contact-desc {
+    color: var(--muted); font-size: 1rem; line-height: 1.8;
+    font-family: 'DM Mono', monospace; font-weight: 300;
+    margin-bottom: 3rem;
+  }
+  .contact-links {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .contact-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    text-decoration: none; color: var(--text);
+    transition: all 0.2s;
+    cursor: none;
+  }
+  .contact-link:hover {
+    border-color: var(--accent);
+    background: rgba(232,255,71,0.03);
+  }
+  .contact-link-label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .contact-link-value { font-family: 'Instrument Serif', serif; font-size: 1.2rem; }
+  .contact-link-arrow { color: var(--accent); transition: transform 0.2s; }
+  .contact-link:hover .contact-link-arrow { transform: translateX(4px); }
 
-    /* Navigation Bar */
-    .navbar {
-      position: sticky;
-      top: 0;
-      background-color: var(--card-light);
-      box-shadow: var(--shadow-light);
-      z-index: 1000;
-      animation: slideDown 0.5s ease-in-out;
-      transition: background-color 0.5s ease, box-shadow 0.5s ease;
-    }
+  /* FOOTER */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer p { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  footer span { color: var(--accent); }
 
-    body.dark-mode .navbar {
-      background-color: var(--card-dark);
-      box-shadow: var(--shadow-dark);
-    }
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    .navbar .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-    }
-
-    .navbar .nav-links {
-      display: flex;
-      gap: 20px;
-    }
-
-    .navbar .nav-links a {
-      color: var(--text-light);
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    body.dark-mode .navbar .nav-links a {
-      color: var(--text-dark);
-    }
-
-    .navbar .nav-links a:hover {
-      color: var(--primary-color);
-    }
-
-    /* Dark Mode Toggle */
-    .dark-mode-toggle {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-    }
-
-    .dark-mode-toggle i {
-      font-size: 1.2rem;
-    }
-
-    /* Sections */
-    .section {
-      padding: 60px 20px;
-      background-color: var(--card-light);
-      margin: 20px 0;
-      border-radius: 10px;
-      box-shadow: var(--shadow-light);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out, background-color 0.5s ease, box-shadow 0.5s ease;
-    }
-
-    body.dark-mode .section {
-      background-color: var(--card-dark);
-      box-shadow: var(--shadow-dark);
-    }
-
-    .section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .section h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: var(--text-light);
-    }
-
-    body.dark-mode .section h2 {
-      color: var(--text-dark);
-    }
-
-    /* Education, Internship, and Project Cards */
-    .education-card,
-    .internship-card,
-    .project-card {
-      border: 1px solid #ddd;
-      padding: 20px;
-      margin: 10px 0;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .education-card.expanded,
-    .internship-card.expanded,
-    .project-card.expanded {
-      background-color: #f9f9f9;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .education-card.expanded,
-    body.dark-mode .internship-card.expanded,
-    body.dark-mode .project-card.expanded {
-      background-color: #3a3a3c;
-    }
-
-    .education-card h3,
-    .internship-card h3,
-    .project-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-
-    /* Expandable Content - Fixed Styles */
-    .expandable-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease-in-out;
-    }
-
-    .education-card.expanded .expandable-content,
-    .internship-card.expanded .expandable-content,
-    .project-card.expanded .expandable-content {
-      max-height: 1000px; /* Large enough to accommodate content */
-      margin-top: 15px;
-    }
-
-    /* Skills Section */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-
-    .skill-item {
-      text-align: center;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border-radius: 10px;
-      transition: transform 0.3s ease, background-color 0.5s ease;
-    }
-
-    body.dark-mode .skill-item {
-      background-color: #3a3a3c;
-    }
-
-    .skill-item:hover {
-      transform: translateY(-5px);
-    }
-
-    .skill-item i {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    /* Contact Section */
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .contact-form input, .contact-form textarea {
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: var(--card-light);
-      color: var(--text-light);
-      transition: background-color 0.5s ease, color 0.5s ease;
-    }
-
-    body.dark-mode .contact-form input, body.dark-mode .contact-form textarea {
-      background-color: var(--card-dark);
-      color: var(--text-dark);
-    }
-
-    .contact-form button {
-      padding: 10px;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .contact-form button:hover {
-      background-color: #005bb5;
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes slideDown {
-      from {
-        transform: translateY(-100%);
-      }
-      to {
-        transform: translateY(0);
-      }
-    }
-    .project-link:hover {
-      color: #6366f1;
-    }
-    .dark-mode {
-      background-color: #1a202c;
-      color: #f7fafc;
-    }
-    .dark-mode .header-gradient {
-      background: linear-gradient(to right, #1a202c, #2d3748);
-    }
-    .dark-mode .section-background {
-      background-color: #2d3748;
-    }
-    .dark-mode .bg-white {
-      background-color: #2d3748;
-      color: #f7fafc;
-    }
-    .dark-mode .text-gray-800{
-      color: #f7fafc;
-    }
-    .dark-mode .text-gray-700{
-      color: #cbd5e0;
-    }
-    .dark-mode .text-gray-600{
-      color: #a0aec0;
-    }
-    .header-gradient {
-      background: linear-gradient(to right, #6b7280, #374151);
-    }
-    .section-background {
-      background-color: #f3f4f6;
-    }
-    .card-shadow {
-      box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15);
-    }
-    .project-link {
-      color: #4f46e5;
-    }
-    .clickme{
-      color: #d9dbe0;
-    }
-  </style>
-  <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@tailwindcss/browser@latest"></script>
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    #hero { padding: 7rem 1.5rem 4rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 1.5rem; }
+  }
+</style>
 </head>
 <body>
-  <!-- Updated Hero Section -->
-  <div class="hero">
-    <img src="https://avatars.githubusercontent.com/u/108356674?v=4" alt="Aaditya Hari Nair">
-    <h1>Aaditya Hari Nair</h1>
-    <p>Data Scientist | Machine Learning Engineer | AI Enthusiast</p>
-    <div class="contact-icons">
-      <a href="mailto:aadi.nair20703@gmail.com"><i class="fas fa-envelope"></i></a>
-      <a href="https://github.com/AadityaGithubFirst" target="_blank"><i class="fab fa-github"></i></a>
-      <a href="https://www.linkedin.com/in/aadityahnair" target="_blank"><i class="fab fa-linkedin"></i></a>
-    </div>
-    <a href="Aaditya_Nair_Resume.pdf" download class="download-resume">Download Resume (PDF)</a>
-  </div>
 
-  <!-- Updated Navigation Bar -->
-  <div class="navbar">
-    <div class="container">
-      <h2>My Website</h2>
-      <div class="nav-links">
-        <a href="#education">Education</a>
-        <a href="#skills">Skills</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-        <a href="Task_Manager.html">Tasks</a>
-        <div class="dark-mode-toggle" onclick="toggleDarkMode()">
-          <i class="fas fa-moon"></i>
-          <span>Dark Mode</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- Updated Education Section -->
-  <div id="education" class="section">
-    <div class="container">
-      <h2>Education</h2>
-      <div class="education-card" onclick="toggleExpand(this)">
-        <h3>Carnegie Mellon University </h3>
-        <p class="clickme">(click me)</p>
-        <p>Masters of Science in Data Analytics for Science</p>
-        <p>Pittsburgh, Pennsylvania | May 2025</p>
-        
-        <div class="expandable-content">
-          <p>GPA: 4.00</p>
-          <p>Relevant Coursework: Large Scale Computing, Computer Vision, NLP, Neural Networks, Advanced Natural Language Processing</p>
-        </div>
-      </div>
-      <div class="education-card" onclick="toggleExpand(this)">
-        <h3>Ramrao Adik Institute of Technology</h3>
-        <p>Bachelor of Technology in Computer Engineering</p>
-        <p>Navi Mumbai, India | May 2024</p>
-        <div class="expandable-content">
-          <p>GPA: 9.27/10</p>
-          <p>Relevant Coursework: Machine Learning, Big Data Analytics, Data Warehousing and Mining, Soft Computing</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">AHN</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-  <!-- Updated Skills Section -->
-  <div id="skills" class="section">
-    <div class="container">
-      <h2 class="text-3xl font-semibold text-gray-800 text-center mb-8">Skills</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Programming</h4>
-          <p class="text-gray-700 text-lg">Python, R, C, Java, JavaScript, PHP, HTML, CSS</p>
-        </div>
-        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Database</h4>
-          <p class="text-gray-700 text-lg">MySQL, Firebase, MariaDB, PostgreSQL</p>
-        </div>
-        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Operating Systems</h4>
-          <p class="text-gray-700 text-lg">Windows, Linux</p>
-        </div>
-        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Language</h4>
-          <p class="text-gray-700 text-lg">English, Hindi, French, Malayalam</p>
-        </div>
-        <div class="bg-white rounded-lg shadow-md card-shadow p-6 transition-shadow hover:shadow-lg">
-          <h4 class="text-lg font-semibold text-indigo-600 mb-3">Software Knowledge</h4>
-          <p class="text-gray-700 text-lg">MATLAB, PyTorch, TensorFlow, PowerBI, Tableau, Hugging Face, pyspark, Kubernetes</p>
-        </div>
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-eyebrow">Data Scientist & ML Engineer</div>
+  <h1 class="hero-name">
+    Aaditya<br><em>Hari Nair</em>
+  </h1>
+  <p class="hero-desc">
+    CMU graduate turning messy data into clear decisions. Specializing in machine learning, deep learning, and data engineering — with a eye for systems that actually scale.
+  </p>
+  <div class="hero-ctas">
+    <a href="#projects" class="btn btn-primary">View My Work</a>
+    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Who I Am</div>
+  <h2 class="section-title">Building things<br>that <em style="font-style:italic; color:var(--accent)">matter</em></h2>
+  <div class="about-grid fade-up">
+    <div class="about-text">
+      <p>I'm a <strong>data scientist and ML engineer</strong> based in New York, with an MS in Data Analytics for Science from <strong>Carnegie Mellon University</strong> (GPA: ~3.95). I have 3+ years of industry experience bridging the gap between raw data and real-world impact.</p>
+      <p>My work spans <strong>deep learning, NLP, computer vision</strong>, and cloud-scale data engineering. I'm drawn to problems where the data is messy, the stakes are high, and the solution needs to hold up in production.</p>
+      <p>When I'm not in a notebook, I'm writing about tech, experimenting in the kitchen, or exploring the intersection of AI and infrastructure.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Years Industry Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3.95</div>
+        <div class="stat-label">CMU GPA</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">93%</div>
+        <div class="stat-label">DeepFake Detection Accuracy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">88%</div>
+        <div class="stat-label">Sentiment Analysis Accuracy</div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- New Professional Experience Section -->
-  <div id="experience" class="section">
-    <div class="container">
-      <h2>Professional Experience</h2>
-      <div class="internship-card" onclick="toggleExpand(this)">
-        <h3>Carnegie Mellon University - Reddit FinOps Capstone Project</h3>
-        <p>Data Science Intern | Jan 2025 – April 2025</p>
-        <div class="expandable-content">
-          <ul>
-            <li>Analyzed internal BigQuery usage by examining job logs, metadata and query execution details</li>
-            <li>Optimized data workflows and compute strategies to improve query efficiency</li>
-            <li>Developed predictive models for resource consumption using Python, PyTorch, and Spark</li>
-          </ul>
-        </div>
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Selected Work</div>
+  <h2 class="section-title">Projects</h2>
+  <div class="projects-grid" id="projectsGrid">
+    <div class="project-card fade-up">
+      <span class="project-tag">NLP / Computer Vision</span>
+      <h3 class="project-title">DeepFake Detection System</h3>
+      <p class="project-desc">End-to-end ML pipeline achieving 93% accuracy in detecting AI-generated media. Combines CNNs with transformer-based feature extraction and explainability layers.</p>
+      <div class="project-stack">
+        <span class="stack-tag">PyTorch</span>
+        <span class="stack-tag">Transformers</span>
+        <span class="stack-tag">OpenCV</span>
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">SHAP</span>
       </div>
-      <div class="internship-card" onclick="toggleExpand(this)">
-        <h3>Urbanaut Travels and Experiences Pvt. Ltd</h3>
-        <p>Data Science Intern | Mumbai, India</p>
-        <div class="expandable-content">
-          <ul>
-            <li>Created Google Looker Studio dashboard boosting targeted marketing efficiency</li>
-            <li>Conducted data analysis revealing customer demographic correlations</li>
-            <li>Identified 3 new high-potential markets through data insights</li>
-          </ul>
-        </div>
+    </div>
+    <div class="project-card fade-up">
+      <span class="project-tag">Data Engineering</span>
+      <h3 class="project-title">Reddit BigQuery Capstone</h3>
+      <p class="project-desc">Large-scale Reddit data pipeline with significant BigQuery cost savings through query optimization, partitioning strategies, and intelligent caching layers.</p>
+      <div class="project-stack">
+        <span class="stack-tag">BigQuery</span>
+        <span class="stack-tag">GCP</span>
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">dbt</span>
+        <span class="stack-tag">SQL</span>
       </div>
-      <div class="internship-card" onclick="toggleExpand(this)">
-        <h3>Koyé Pharmaceutical</h3>
-        <p>Computer Science Intern | Mumbai, India</p>
-        <div class="expandable-content">
-          <ul>
-            <li>Architected on-premises email server reducing IT costs</li>
-            <li>Optimized server configuration improving processing efficiency</li>
-            <li>Enhanced data sovereignty and sustainability measures</li>
-          </ul>
-        </div>
+    </div>
+    <div class="project-card fade-up">
+      <span class="project-tag">NLP / Finance</span>
+      <h3 class="project-title">Financial Sentiment Analysis</h3>
+      <p class="project-desc">88% accuracy sentiment classifier for financial news using fine-tuned DistilBERT. Includes real-time inference pipeline and a lightweight dashboard.</p>
+      <div class="project-stack">
+        <span class="stack-tag">DistilBERT</span>
+        <span class="stack-tag">HuggingFace</span>
+        <span class="stack-tag">FastAPI</span>
+        <span class="stack-tag">React</span>
+      </div>
+    </div>
+    <div class="project-card fade-up">
+      <span class="project-tag">Healthcare / IoT</span>
+      <h3 class="project-title">Wearable Health Analytics</h3>
+      <p class="project-desc">HIPAA-compliant system integrating Apple Watch and Fitbit data for post-PCI heart-rate irregularity detection. Covers full architecture from OAuth to analytics pipeline.</p>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Azure</span>
+        <span class="stack-tag">Fitbit API</span>
+        <span class="stack-tag">HL7 FHIR</span>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Updated Projects Section -->
-  <div id="projects" class="section">
-    <div class="container">
-      <h2>Projects</h2>
-      <div class="project-card" onclick="toggleExpand(this)">
-        <h3>Deep Fake Image Detection</h3>
-        <p>Ramrao Adik Institute of Technology</p>
-        <div class="expandable-content">
-          <ul>
-            <li>Curated dataset of 10,000+ images</li>
-            <li>Achieved 93% accuracy with CNN model in PyTorch</li>
-            <li>False positive rate <2% (<a href="https://github.com/AadityaGithubFirst/DeepFake-Detection" target="_blank">GitHub</a>)</li>
-          </ul>
-        </div>
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Toolkit</div>
+  <h2 class="section-title">Skills</h2>
+  <div class="skills-container fade-up">
+    <div class="skill-group">
+      <div class="skill-group-title">Machine Learning & AI</div>
+      <div class="skill-pills">
+        <span class="skill-pill">PyTorch</span>
+        <span class="skill-pill">TensorFlow</span>
+        <span class="skill-pill">Scikit-learn</span>
+        <span class="skill-pill">HuggingFace</span>
+        <span class="skill-pill">BERT / RoBERTa</span>
+        <span class="skill-pill">CNNs</span>
+        <span class="skill-pill">Transformers</span>
+        <span class="skill-pill">XGBoost</span>
+        <span class="skill-pill">MLflow</span>
       </div>
-      <div class="project-card" onclick="toggleExpand(this)">
-        <h3>Malaria Detection in Red Blood Cells</h3>
-        <p>Carnegie Mellon University</p>
-        <div class="expandable-content">
-          <ul>
-            <li>CNN model achieving 94.6% accuracy on Kaggle dataset</li>
-            <li>Implemented data preprocessing and hyperparameter tuning</li>
-            <li>Single-cell image classification for Plasmodium detection (<a href="https://github.com/AadityaGithubFirst/Detection-of-Malaria-in-Red-Blood-Cells" target="_blank">GitHub</a>)</li>
-          </ul>
-        </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Data Engineering & Cloud</div>
+      <div class="skill-pills">
+        <span class="skill-pill">BigQuery</span>
+        <span class="skill-pill">GCP</span>
+        <span class="skill-pill">AWS</span>
+        <span class="skill-pill">Azure</span>
+        <span class="skill-pill">Apache Spark</span>
+        <span class="skill-pill">dbt</span>
+        <span class="skill-pill">Airflow</span>
+        <span class="skill-pill">Kafka</span>
+        <span class="skill-pill">Docker</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Languages & Databases</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">R</span>
+        <span class="skill-pill">SQL</span>
+        <span class="skill-pill">JavaScript</span>
+        <span class="skill-pill">PostgreSQL</span>
+        <span class="skill-pill">MongoDB</span>
+        <span class="skill-pill">Redis</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Visualization & Analytics</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Tableau</span>
+        <span class="skill-pill">Power BI</span>
+        <span class="skill-pill">Plotly</span>
+        <span class="skill-pill">D3.js</span>
+        <span class="skill-pill">Looker</span>
+        <span class="skill-pill">Pandas</span>
+        <span class="skill-pill">NumPy</span>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Contact Section -->
-  <div id="contact" class="section">
-    <div class="container">
-      <h2>Contact</h2>
-      <form class="contact-form">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="Your Message" rows="5" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-label">Thoughts & Writing</div>
+  <h2 class="section-title">Blog</h2>
+
+  <div class="blog-controls">
+    <p style="color:var(--muted); font-family:'DM Mono',monospace; font-size:0.85rem;">
+      Writing on data, ML, infrastructure, and the occasional hot take.
+    </p>
+    <button class="btn btn-primary" onclick="toggleNewPost()" id="newPostBtn">+ New Post</button>
+  </div>
+
+  <!-- New Post Form -->
+  <div class="new-post-form" id="newPostForm">
+    <div style="font-family:'Instrument Serif',serif; font-size:1.5rem; margin-bottom:1.5rem;">Write a New Post</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="postTitle" placeholder="Your post title..." />
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="postCategory">
+          <option value="Machine Learning">Machine Learning</option>
+          <option value="Data Engineering">Data Engineering</option>
+          <option value="Industry">Industry</option>
+          <option value="Career">Career</option>
+          <option value="Opinion">Opinion</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:1rem;">
+      <label>Excerpt (short summary)</label>
+      <input type="text" id="postExcerpt" placeholder="A one-line summary..." />
+    </div>
+    <div class="form-group">
+      <label>Content (supports paragraphs — separate with blank line)</label>
+      <textarea id="postContent" placeholder="Write your post here...&#10;&#10;Use a blank line to separate paragraphs.&#10;&#10;Use ### Heading to add section headers."></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="publishPost()">Publish Post</button>
+      <button class="btn btn-outline" onclick="toggleNewPost()">Cancel</button>
     </div>
   </div>
 
-  <script>
-    // Improved toggle function for expandable content
-    function toggleExpand(card) {
-      // First close any other expanded cards in the same section
-      const parentSection = card.closest('.section');
-      const allCards = parentSection.querySelectorAll('.education-card, .internship-card, .project-card');
-      
-      allCards.forEach(otherCard => {
-        if (otherCard !== card && otherCard.classList.contains('expanded')) {
-          otherCard.classList.remove('expanded');
-        }
-      });
-      
-      // Then toggle the clicked card
-      card.classList.toggle('expanded');
-      
-      // Update ARIA attribute for accessibility
-      const isExpanded = card.classList.contains('expanded');
-      card.setAttribute('aria-expanded', isExpanded);
-    }
+  <div class="blog-grid" id="blogGrid"></div>
+</section>
 
-    // Add transitions when sections come into view
-    const sections = document.querySelectorAll('.section');
+<!-- BLOG MODAL -->
+<div class="blog-modal-overlay" id="blogModal">
+  <div class="blog-modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-meta" id="modalMeta"></div>
+    <h2 class="modal-title" id="modalTitle"></h2>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Let's Connect</div>
+  <h2 class="section-title">Get in touch</h2>
+  <div class="contact-inner fade-up">
+    <p class="contact-desc">
+      Open to data science, ML engineering, and data analytics roles. Also happy to chat about projects, collaborations, or anything in the DS/ML space.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:aadi@example.com" class="contact-link">
+        <span class="contact-link-label">Email</span>
+        <span class="contact-link-value">aadi@example.com</span>
+        <span class="contact-link-arrow">→</span>
+      </a>
+      <a href="https://linkedin.com/in/aadityanair" target="_blank" class="contact-link">
+        <span class="contact-link-label">LinkedIn</span>
+        <span class="contact-link-value">linkedin.com/in/aadityanair</span>
+        <span class="contact-link-arrow">→</span>
+      </a>
+      <a href="https://github.com/aadityanair" target="_blank" class="contact-link">
+        <span class="contact-link-label">GitHub</span>
+        <span class="contact-link-value">github.com/aadityanair</span>
+        <span class="contact-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-    sections.forEach((section) => {
-      observer.observe(section);
-    });
+<footer>
+  <p>© 2025 <span>Aaditya Hari Nair</span>. Built with intent.</p>
+  <p style="font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--muted);">New York, NY</p>
+</footer>
 
-    // Dark Mode Toggle
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      const darkModeToggle = document.querySelector('.dark-mode-toggle');
-      if (document.body.classList.contains('dark-mode')) {
-        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
-      } else {
-        darkModeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Dark Mode</span>';
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function animateCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  })();
+  document.querySelectorAll('a,button,.project-card,.blog-card,.skill-pill,.contact-link').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; ring.style.width = '50px'; ring.style.height = '50px'; });
+    el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; ring.style.width = '36px'; ring.style.height = '36px'; });
+  });
+
+  // SCROLL ANIMATIONS
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
       }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // BLOG DATA
+  let posts = [
+    {
+      id: 1,
+      title: "The DRAM Shortage and AI Infrastructure: What's Really Happening",
+      category: "Industry",
+      date: "Mar 2025",
+      excerpt: "How memory constraints are quietly reshaping the economics of large-scale AI training.",
+      content: `The AI boom is often discussed in terms of compute — GPUs, TPUs, FLOPs. But a quieter bottleneck has been building for months: DRAM.\n\n### The Invisible Constraint\n\nMemory bandwidth, not raw compute, is increasingly the binding constraint for LLM inference at scale. Every forward pass requires moving billions of parameters from HBM into compute units — and that movement is expensive in both time and energy.\n\n### Supply Dynamics\n\nThe DRAM market has historically been cyclical. Oversupply drives prices down, manufacturers cut capacity, then demand outpaces supply and prices spike. AI has added a new dimension: not just higher volume, but qualitatively different requirements. HBM3 and HBM3E are niche products requiring specialized fab processes that can't be quickly scaled.\n\n### What This Means for the Industry\n\nThe companies best positioned are those that either control their own silicon (Google's TPUs, Amazon's Trainium) or have locked in long-term supply agreements. Everyone else is bidding in a constrained market. This dynamic will quietly shape which AI products are economically viable over the next 18–24 months.`
+    },
+    {
+      id: 2,
+      title: "BigQuery Cost Optimization: Lessons from the Reddit Capstone",
+      category: "Data Engineering",
+      date: "Jan 2025",
+      excerpt: "Practical partitioning, clustering, and query design patterns that actually move the needle.",
+      content: `Optimizing BigQuery isn't about clever tricks — it's about understanding how BigQuery prices queries and designing your schema and patterns around that reality.\n\n### The Baseline Problem\n\nWhen we started the Reddit capstone, queries were scanning full tables on every run. At petabyte scale, that's not a cost problem — it's an architecture problem.\n\n### Partitioning First\n\nThe single biggest win was time-based partitioning on the created_utc column. Queries filtered by date went from scanning the entire dataset to scanning only the relevant partition. Cost dropped by ~70% on those queries overnight.\n\n### Clustering as a Secondary Layer\n\nAfter partitioning, clustering by subreddit_id brought another meaningful reduction for queries filtering on community. The key insight: clustering only helps if your queries actually filter on the clustered columns — check your WHERE clauses before adding it.\n\n### Query Design Patterns\n\nAvoid SELECT *. Always. Use column pruning religiously. Prefer CTEs over subqueries for readability, but understand that BigQuery materializes them differently. And cache your results — repeated queries on the same data are just money on the floor.`
+    },
+    {
+      id: 3,
+      title: "Why Most DeepFake Detectors Fail in the Wild",
+      category: "Machine Learning",
+      date: "Nov 2024",
+      excerpt: "Generalization is harder than benchmark scores suggest. Here's what we learned building a 93% accuracy system.",
+      content: `Building a deepfake detector that scores 93% on a benchmark is satisfying. Building one that holds up in production is a different challenge entirely.\n\n### The Benchmark Trap\n\nMost academic deepfake datasets are generated with a small number of synthesis methods. A model trained and tested on FaceForensics++ will learn to detect the artifacts specific to those methods — not deepfakes in general.\n\n### What Actually Transfers\n\nIn our work, we found that models trained on frequency-domain features generalized better than those trained purely on spatial features. GAN artifacts often show up in the FFT spectrum before they're visible to the human eye.\n\n### Ensemble Approaches\n\nThe 93% figure came from an ensemble: a spatial CNN, a frequency-domain analyzer, and a temporal consistency checker for video. No single model got there alone. The temporal component was especially valuable — even perfect single-frame fakes struggle with blink patterns and micro-expressions over time.\n\n### The Moving Target Problem\n\nThe deeper issue: generation quality is improving faster than detection. Any production system needs continuous retraining against new synthesis methods. Treat it like a security system, not a static classifier.`
     }
-  </script>
-  
-  <footer>
-    &copy; 2025 Aaditya Hari Nair | Made with ❤️
-  </footer>
+  ];
+
+  function renderBlog() {
+    const grid = document.getElementById('blogGrid');
+    grid.innerHTML = '';
+    posts.forEach(post => {
+      const card = document.createElement('div');
+      card.className = 'blog-card fade-up';
+      card.innerHTML = `
+        <div class="blog-meta">
+          <span class="blog-date">${post.date}</span>
+          <span class="blog-category">${post.category}</span>
+        </div>
+        <h3 class="blog-title">${post.title}</h3>
+        <p class="blog-excerpt">${post.excerpt}</p>
+        <a class="read-more" onclick="openPost(${post.id})">Read More</a>
+      `;
+      grid.appendChild(card);
+      observer.observe(card);
+    });
+  }
+
+  function openPost(id) {
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+    document.getElementById('modalTitle').textContent = post.title;
+    document.getElementById('modalMeta').innerHTML = `
+      <span class="blog-date">${post.date}</span>
+      <span class="blog-category">${post.category}</span>
+    `;
+    const body = post.content.split('\n\n').map(para => {
+      if (para.startsWith('### ')) return `<h3>${para.replace('### ', '')}</h3>`;
+      return `<p>${para}</p>`;
+    }).join('');
+    document.getElementById('modalBody').innerHTML = body;
+    document.getElementById('blogModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('blogModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('blogModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('blogModal')) closeModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  function toggleNewPost() {
+    const form = document.getElementById('newPostForm');
+    form.classList.toggle('active');
+    const btn = document.getElementById('newPostBtn');
+    btn.textContent = form.classList.contains('active') ? '✕ Cancel' : '+ New Post';
+  }
+
+  function publishPost() {
+    const title = document.getElementById('postTitle').value.trim();
+    const category = document.getElementById('postCategory').value;
+    const excerpt = document.getElementById('postExcerpt').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    if (!title || !content) {
+      alert('Please add at least a title and content.');
+      return;
+    }
+    const now = new Date();
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const date = `${months[now.getMonth()]} ${now.getFullYear()}`;
+    posts.unshift({
+      id: Date.now(),
+      title, category, excerpt: excerpt || content.slice(0, 100) + '...', content, date
+    });
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postExcerpt').value = '';
+    document.getElementById('postContent').value = '';
+    toggleNewPost();
+    renderBlog();
+  }
+
+  renderBlog();
+</script>
 </body>
 </html>
